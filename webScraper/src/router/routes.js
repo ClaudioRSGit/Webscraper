@@ -3,9 +3,10 @@ import {useAuth} from '@/stores/auth.js'
 export default async function routes(to,from,next){
   const auth = useAuth();
   const requiresAuth = to.meta?.auth;
-  
+  const requireAdmin = to.meta?.admin;
+
   try {
-    if (!auth.token && requiresAuth) {
+    if (requiresAuth && requireAdmin && auth.user.role_id !== 1) {
       next({ name: 'login' });
     } else {
       // Check if the route requires authentication

@@ -57,8 +57,12 @@ const user = reactive({
 
 async function Login() {
   try {
-    const {token, user: userData} = await loginUser(user);
-    auth.setToken(token);
+    const {
+      token, 
+      user: userData
+    } = await loginUser(user);
+    
+    // auth.setToken(token);
     auth.setUser(userData);
     auth.setIsAuth(true);
     router.push({name:'home'});

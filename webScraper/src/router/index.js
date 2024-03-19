@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import NotFound from '../components/NotFound.vue'
-import {useAuth} from '@/stores/auth.js'
 import routes from '@/router/routes.js'
 
 const router = createRouter({
@@ -10,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: () => import('../views/HomeView.vue')
     },
     {
       path: '/products',
@@ -31,8 +28,9 @@ const router = createRouter({
       path: '/administration',
       name: 'administration',
       component: () => import('../views/AdministrationView.vue'),
-         meta: {
-         auth: true
+        meta: {
+        auth: true,
+        admin: true
       }
     },
     {

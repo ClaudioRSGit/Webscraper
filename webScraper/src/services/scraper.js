@@ -36,7 +36,7 @@ export const testScrap = async (link, tag) => {
                 tag: tag
             }
         };
-        const response = await axios.get('/scrape', request);
+        const response = await axios.get('http://localhost:8000/api/scrape', request);
         console.log('Scraped price from testScrap:', response.data);
         return response.data;
     } catch (error) {

@@ -36,9 +36,9 @@ class UserController extends Controller
         $user->password = $request->input('password');
         $user->role_id = $request->input('role_id');
         $user->isActive = $request->input('isActive');
-        
+
         $user->save();
-        
+
         return response()->json([
             "message" => "User created successfully!",
             "code" => 201
@@ -82,7 +82,7 @@ class UserController extends Controller
         $user = User::find($id);
         if ($user) {
             $user->delete();
-            
+
             return response()->json([
                 "message" => "User deleted successfully!",
                 "code" => 201

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Custom\Jwt;
+use Illuminate\Support\Facades\Cookie;
 
 class Auth extends Controller
 {
@@ -14,7 +15,7 @@ class Auth extends Controller
         if (!$user) {
             return response()->json('Not Authorized',401);
         }
-        
+
         //verify if login's form password == user's password
         if (!password_verify($request->password, $user->password)) {
             return response()->json('Not Authorized',401);
@@ -22,19 +23,34 @@ class Auth extends Controller
 
         //JWT -> creates and sends to front end to store on local storage
         $token = Jwt::create($user);
-        
+
+        $cookie = cookie('Bearer', $token, 60 * 24);//1 day
+
         return response()->json([
-            'token' => $token,
             'user' => [
                 'firstName' => $user->firstName,
                 'lastName' => $user->lastName,
                 'role_id' => $user->role_id
             ]
-        ]);
+        ])->cookie($cookie);
     }
 
-    public function verify(){
-        return Jwt::validate();
+    public function verify(Request $request){
+
+        try {
+            $requestValidated = Jwt::validate($request);
+            $user = $requestValidated->data;
+
+            return response()->json([
+                'user' => [
+                    'firstName' => $user->firstName,
+                    'lastName' => $user->lastName,
+                    'role_id' => $user->role_id
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(),401);
+        }
     }
 
     public function register(Request $request) {
@@ -55,5 +71,11 @@ class Auth extends Controller
 
             return response()->json(['success' => 'User registered successfully'], 200);
         }
+    }
+
+    public function logout(Request $request) {
+        $cookie = Cookie::forget('Bearer');
+
+        return response()->json(['success' => 'User logged out successfully'], 200)->cookie($cookie);
     }
 }

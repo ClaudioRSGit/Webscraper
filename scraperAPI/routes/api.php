@@ -10,10 +10,11 @@ use App\Http\Controllers\Category;
 use App\Http\Controllers\Market;
 
 Route::post('/auth',[Auth::class,'auth']);
+Route::get('/auth/logout',[Auth::class,'logout']);
 Route::get('/auth/verify',[Auth::class,'verify']);
 Route::post('/register', [Auth::class, 'register']);
 
-Route::get('/scrape', 'ScrapingController@scrape')->middleware('corscontroller');
+Route::get('/scrape', 'ScrapingController@scrape');
 
 //get routes
 Route::get('/users', 'UserController@index');
@@ -47,9 +48,9 @@ Route::put('/updateRole/{id}', 'RoleController@update');
 Route::put('/updateMarket/{id}', 'MarketController@update');
 Route::put('/updateCategory/{id}', 'CategoryController@update');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 // Route::group(['middleware' => ['api']], function ($api) {
 // });

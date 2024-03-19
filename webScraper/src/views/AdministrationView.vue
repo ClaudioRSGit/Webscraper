@@ -139,7 +139,14 @@ import { useAuth } from '@/stores/auth.js';
 
 const currentTableComponent = ref(null);
 const activeItem = ref('dashboard');
-const { authUserId } = useAuth();
+const auth  = useAuth();
+const router = useRouter();
+
+function logout() {
+    auth.logout();
+    router.push({name:'login'});
+}
+
 function showTable(table) {
   switch(table) {
     case 'dashboard':
