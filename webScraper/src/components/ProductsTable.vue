@@ -102,7 +102,7 @@
                 <!--  -->
                 <div class="infinite-scroll">
                   <div v-for="(row, index) in rowData" :key="index">
-                    <div class="border rounded border-secondary p-2 mb-3">
+                    <div class="border rounded border-secondary p-2 mb-3" :class="{ 'border-success': row.price, 'border-danger': !row.price }">
                       <div class="row mb-3 col-12">
                         <div class="col-2">
                           <label for="market" class="form-label">Market</label>
@@ -122,14 +122,17 @@
                         </div>
                         <div class="col-2 d-flex align-items-center">
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-                            @click.prevent="handleScraping(row.link, row.tag)">
-                            <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"/>
-                          </svg>
-                          <i class="fas fa-trash" @click.prevent="removeRow(index)"></i>
-                        </div>
+                          @click.prevent="handleScraping(row.link, row.tag, index)">
+                          <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9V344c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"/>
+                        </svg>
+                        <i class="fas fa-trash" @click.prevent="removeRow(index)"></i>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="text-center mb-3 text-danger">
+                  <span>{{ scrapingError }}</span>
+                </div>
                   <div class="text-center">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" @click.prevent="addRow">
                     <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/>
@@ -158,8 +161,8 @@
   <script>
   import axios from 'axios';
   import { ref, onMounted } from 'vue';
-  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct as updateProductRequest } from '@/services/http.js';
-  import { testScrap } from '@/services/scraper.js';
+  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct as updateProductRequest, createProductMarketPrice } from '@/services/http.js';
+  import { scrapPrice } from '@/services/scraper.js';
 
   export default {
     name: 'ProductsTable',
@@ -175,13 +178,37 @@
       const categoryId = ref('');
       const productIdToEdit = ref(null);
       const rowData = ref([]);
-      
-      const handleScraping = (link, tag) => {
-        console.log(link);
-        console.log(tag);
-        testScrap(link, tag);
+      const prodPrice = ref('');
+      const scrapingError = ref('');
+
+      const handleScraping = async (link, tag, index) => {
+        try {
+          prodPrice.value = await scrapPrice(link, tag);
+          rowData.value[index].price = prodPrice.value.price;
+          
+          const marketName = extractMarketName(link);
+          rowData.value[index].market = marketName;
+
+          const rowElement = document.getElementById(`row-${index}`);          
+        } catch (error) {
+          scrapingError.value = 'Error scraping: ' + error.message;
+        }
       };
 
+      const extractMarketName = (link) => {
+        if (link.startsWith("https://") || link.startsWith("http://")) {
+          const withoutProtocol = link.replace(/^(https?:\/\/)/, "");
+          
+          const domain = withoutProtocol.split("/")[0];
+          
+          const marketName = domain.split(".")[1];
+          
+          return marketName.charAt(0).toUpperCase() + marketName.slice(1);
+        } else {
+          return "Unknown";
+        }
+      };
+      
       const showModal = () => {
         $('#productModal').modal('show');
       };
@@ -245,21 +272,21 @@
         }
       };
 
-      const editProduct = async (id) => {
-        try {
-            productIdToEdit.value = id;
-            const product = products.value.find(product => product.id === id);
-            if (product) {
-                title.value = product.title;
-                productDescription.value = product.description;
-                brand.value = product.brand;
-                rating.value = product.avg_rating;
-                selectedCategory.value = product.category_id;
-                $('#productModal').modal('show');
-            }
-        } catch (error) {
-            console.error(error);
-        }
+    const editProduct = async (id) => {
+      try {
+          productIdToEdit.value = id;
+          const product = products.value.find(product => product.id === id);
+          if (product) {
+              title.value = product.title;
+              productDescription.value = product.description;
+              brand.value = product.brand;
+              rating.value = product.avg_rating;
+              selectedCategory.value = product.category_id;
+              $('#productModal').modal('show');
+          }
+      } catch (error) {
+          console.error(error);
+      }
     };
     const addRow = () => {
       rowData.value.push({
@@ -272,11 +299,11 @@
     
     const removeRow = (index) => {
       rowData.value.splice(index, 1);
+      scrapingError.value = '';
     };
 
     const updateProduct = async () => {
       try {
-        if (title.value) {
           await updateProductRequest(productIdToEdit.value, {
             title: title.value,
             description: productDescription.value,
@@ -284,26 +311,69 @@
             avg_rating: rating.value,
             category_id: selectedCategory.value
           });
-          title.value = '';
-          productDescription.value = '';
-          brand.value = '';
-          rating.value = '';
-          selectedCategory.value = '';
-          productIdToEdit.value = null;
+       
+          for (const row of rowData.value) {
+            if (row.price) {
+              await saveProductMarketPrice(row);
+            }
+          }
+
+          cleanValues();
+          rowData.value = [];
           $('#productModal').modal('hide');
           fetchProducts();
-        } else {
-          errors.value.push('All fields are required');
-        }
       } catch (error) {
         console.error(error);
       }
     };
-
+    const saveProductMarketPrice = async (row) => {
+      try {
+        console.log(
+            '\nproductIdToEdit:' + productIdToEdit.value,
+            '\nRow price' + row.price, 
+            '\nrow link ' + row.link,
+            '\nrow tag' + row.tag + '\n');
+        await createProductMarketPrice(
+          {
+            market_id: 5, // mudar depois -> market padrao -> o scraper tem de scrapar o market e verificar se existe
+            product_id: productIdToEdit.value,
+            price: row.price,
+            link: row.link,
+            currency: 'EUR', // // mudar depois -> currency padrao -> o scraper tem de scrapar a currency
+            tag: row.tag
+          }
+        );
+        
+      } catch (error) {
+        console.error('Error saving product market price:', error);
+      }
+    };
+    const cleanValues = () => {
+      title.value = '';
+      productDescription.value = '';
+      brand.value = '';
+      rating.value = '';
+      selectedCategory.value = '';
+      productIdToEdit.value = null;
+    }
     const getCategoryDescription = (categoryId) => {
         const cat = categories.value.find(cat => cat.id === categoryId);
         return cat ? cat.description : 'Unknown Category';
     };
+
+    const calculateLinkInfo = () => {
+      const linkInfo = {};
+      rowData.value.forEach((row, index) => {
+        if (row.price) {
+          if (!linkInfo[row.link]) {
+            linkInfo[row.link] = [];
+          }
+          linkInfo[row.link].push(`price${index + 1}: ${row.price}`);
+        }
+      });
+      return linkInfo;
+    };
+
     onMounted(() => {
       fetchProducts();
       fetchCategories();
@@ -334,7 +404,12 @@
       removeRow,
       rowData,
       handleScraping,
-      testScrap
+      scrapPrice,
+      prodPrice,
+      scrapingError,
+      calculateLinkInfo,
+      cleanValues,
+      saveProductMarketPrice
     };
     }
   };

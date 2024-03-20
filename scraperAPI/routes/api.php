@@ -25,6 +25,7 @@ Route::get('/roles', 'RoleController@index');
 Route::get('/categories', 'CategoryController@index');
 Route::get('/markets', 'MarketController@index');
 Route::get('/pendingProducts', 'PendingProductController@index');
+Route::get('/productMarketPrices', 'ProductMarketPriceController@index');
 
 //post routes
 Route::post('/createCategory', 'CategoryController@store');
@@ -32,6 +33,7 @@ Route::post('/createUser', 'UserController@store');
 Route::post('/createRole', 'RoleController@store');
 Route::post('/createMarket', 'MarketController@store');
 Route::post('/createProduct', 'ProductController@store');
+Route::post('/productMarketPrices', 'ProductMarketPriceController@store');
 
 //destroy routes
 Route::delete('/destroyUser/{id}', 'UserController@destroy');

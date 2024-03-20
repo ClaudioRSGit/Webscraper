@@ -136,6 +136,15 @@ export const createProduct = async (newProduct) => {
       throw error;
   }
 };
+export const createProductMarketPrice = async (newProductMarketPrice) => {
+  try {
+      const response = await axiosInstance.post('/productMarketPrices', newProductMarketPrice);
+      return response.data;
+  } catch (error) {
+      console.error(error);
+      throw error;
+  }
+};
 
 //delete functions
 export const deleteUser = async (id) => {

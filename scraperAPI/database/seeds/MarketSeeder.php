@@ -14,8 +14,8 @@ class MarketSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Fnac',
-                'logo' => 'https://e7.pngegg.com/pngimages/365/359/png-clipart-fnac-logo-fnac-logo-icons-logos-emojis-shop-logos.png',
+                'name' => 'Medis Markt',
+                'logo' => 'https://cdn.shopify.com/s/files/1/2700/1230/files/Media_Markt.withR5x.png?height=628&pad_color=ffffff&v=1613681078&width=1200',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -31,6 +31,12 @@ class MarketSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'name' => 'Mercado Padrao',
+                'logo' => 'https://cdn-icons-png.flaticon.com/512/3464/3464493.png',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]
         ]);
     }
 }

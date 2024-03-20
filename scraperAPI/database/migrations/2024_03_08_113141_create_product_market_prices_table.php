@@ -12,7 +12,7 @@ class CreateProductMarketPricesTable extends Migration
             $table->id();
             $table->foreignId('market_id')->constrained();
             $table->foreignId('product_id')->constrained();
-            $table->decimal('price', 10, 2);
+            $table->string('price');
             $table->string('link');
             $table->string('currency');
             $table->string('tag');

@@ -7,79 +7,35 @@ use Illuminate\Http\Request;
 
 class ProductMarketPriceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $productMarketPrices = ProductMarketPrice::all();
+        return response()->json($productMarketPrices);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'market_id' => 'required',
+            'product_id' => 'required',
+            'price' => 'required',
+            'link' => 'required',
+            'tag' => 'required',
+            'currency' => 'required'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\ProductMarketPrice  $productMarketPrice
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ProductMarketPrice $productMarketPrice)
-    {
-        //
-    }
+        $productMarketPrice = new ProductMarketPrice();
+        $productMarketPrice->market_id = $request->input('market_id');
+        $productMarketPrice->product_id = $request->input('product_id');
+        $productMarketPrice->price = $request->input('price');
+        $productMarketPrice->link = $request->input('link');
+        $productMarketPrice->tag = $request->input('tag');
+        $productMarketPrice->currency = $request->input('currency');
+        $productMarketPrice->created_at = now();
+        $productMarketPrice->updated_at = now();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ProductMarketPrice  $productMarketPrice
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ProductMarketPrice $productMarketPrice)
-    {
-        //
-    }
+        $productMarketPrice->save();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ProductMarketPrice  $productMarketPrice
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ProductMarketPrice $productMarketPrice)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ProductMarketPrice  $productMarketPrice
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProductMarketPrice $productMarketPrice)
-    {
-        //
+        return response()->json($productMarketPrice, 200);
     }
 }

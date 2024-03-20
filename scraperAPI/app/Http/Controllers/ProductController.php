@@ -11,10 +11,11 @@ class ProductController extends Controller
     {
         $products = Product::with(['image' => function ($query) {
             $query->select('id', 'link', 'product_id');
-        }, 'productMarketPrices'])->get();
+        }, 'productMarketPrices' => function ($query) {
+            $query->select('id', 'product_id', 'market_id', 'price', 'link', 'currency', 'tag');
+        }])->get();
 
-
-        return response()->json($products,200);
+        return response()->json($products, 200);
     }
 
     public function store(Request $request)
