@@ -314,6 +314,7 @@
         };
 
         const showModal = () => {
+            resetForm();
             $('#userModal').modal('show');
         };
 

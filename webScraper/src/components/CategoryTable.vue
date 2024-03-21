@@ -44,13 +44,13 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="categoryModalLabel">Create Category</h5>
+            <h5 class="modal-title" id="categoryModalLabel">Category Information</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form @submit.prevent="submitCategory" method="post">
             <div class="modal-body">
-              <label for="catName">Category Name</label>
-              <input class="form-control mt-1" type="text" v-model="catName" id="catName" placeholder="Insert category name">
+              <label for="name">Category Name</label>
+              <input class="form-control mt-1" type="text" v-model="name" id="name" placeholder="Insert category name">
               <label for="link" class="mt-2">Category Image Link</label>
               <input class="form-control mt-1" type="text" v-model="link" id="link" placeholder="Insert the link">
             </div>
@@ -77,11 +77,11 @@
   export default {
     name: 'CategoryTable',
     setup() {
-      const catName = ref('');
+      const name = ref('');
       const link = ref('');
       const categories = ref([]);
       const errors = ref([]);
-      const editingCategory = ref(null);
+      const categoryIdToEdit = ref(null);
   
       const fetchCategories = async () => {
         try {
@@ -92,73 +92,77 @@
       };
   
       const submitCategory = async () => {
-      errors.value = [];
-      if (editingCategory.value) {
-        // Atualizando categoria existente
-        const updatedCategory = {
-          description: catName.value,
-          link: link.value
-        };
-        try {
-          await updateCategory(editingCategory.value.id, updatedCategory);
-
-          catName.value = '';
-          link.value = '';
-          editingCategory.value = null;
-
-          $('#categoryModal').modal('hide');
-          fetchCategories();
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        if (catName.value && link.value) {
-          const newCategory = {
-            description: catName.value,
-            link: link.value
-          };
+        errors.value = [];
+        if (categoryIdToEdit.value) {
           try {
-            await createCategory(newCategory);
+            await updateCategory(categoryIdToEdit.value, {
+              description: name.value,
+              link: link.value
+            });
 
-            catName.value = '';
-            link.value = '';
-
+            cleanForm();
             $('#categoryModal').modal('hide');
             fetchCategories();
           } catch (error) {
             console.error(error);
           }
         } else {
-          if (!catName.value) errors.value.push('Name required');
-          if (!link.value) errors.value.push('Link required');
-        }
+          if (name.value && link.value) {
+            try {
+              await createCategory({
+                description: name.value,
+                link: link.value
+              });
+
+              cleanForm();
+              $('#categoryModal').modal('hide');
+              fetchCategories();
+            } catch (error) {
+              console.error(error);
+            }
+          } else {
+            if (!name.value) errors.value.push('Name required');
+            if (!link.value) errors.value.push('Link required');
+          }
       }
     };
-    const editCategory = (category) => {
-      catName.value = category.description;
-      link.value = category.link;
-      editingCategory.value = category;
+
+    const editCategory = (id) => {
+      categoryIdToEdit.value = id;
+      const category = categories.value.find(category => category.id === id);
+      
+      if (category) {
+        name.value = category.description;
+        link.value = category.link;
+      }
+
       $('#categoryModal').modal('show');
     };
+    
     const destroyCategory = async (id) => {
-          try {
-              await deleteCategory(id);
-              fetchCategories();
-          } catch (error) {
-              console.error(error);
-          }
-      };
+      try {
+          await deleteCategory(id);
+          fetchCategories();
+      } catch (error) {
+          console.error(error);
+      }
+    };
+    
       const showModal = () => {
-      catName.value = '';
-      link.value = '';
-      editingCategory.value = null;
+      cleanForm();
+      categoryIdToEdit.value = null;
       $('#categoryModal').modal('show');
     };
-  
+
+    const cleanForm = () => {
+      name.value = '';
+      link.value = '';
+    };
+
     onMounted(fetchCategories);
 
     return {
-      catName,
+      name,
       link,
       categories,
       errors,

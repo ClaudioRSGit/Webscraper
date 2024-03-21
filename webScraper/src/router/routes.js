@@ -1,10 +1,11 @@
 import {useAuth} from '@/stores/auth.js'
+import { ref } from 'vue';
 
 export default async function routes(to,from,next){
   const auth = useAuth();
   const requiresAuth = to.meta?.auth;
   const requireAdmin = to.meta?.admin;
-
+  
   try {
     if (requiresAuth && requireAdmin && auth.user.role_id !== 1) {
       next({ name: 'login' });

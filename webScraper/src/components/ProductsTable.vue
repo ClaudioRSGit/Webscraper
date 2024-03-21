@@ -149,7 +149,7 @@
               </div>
               <div class="modal-footer d-flex justify-content-between">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" @click.prevent="updateProduct">Update Product</button>
+                <button type="submit" class="btn btn-primary" @click.prevent="submitProduct">Save Changes</button>
               </div>
             </form>
           </div>
@@ -161,7 +161,7 @@
   <script>
   import axios from 'axios';
   import { ref, onMounted } from 'vue';
-  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct as updateProductRequest, createProductMarketPrice } from '@/services/http.js';
+  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct, createProductMarketPrice } from '@/services/http.js';
   import { scrapPrice } from '@/services/scraper.js';
 
   export default {
@@ -210,6 +210,9 @@
       };
       
       const showModal = () => {
+        cleanValues();
+        productIdToEdit.value = null;
+        $('#roleModalLabel').text('Add Product');
         $('#productModal').modal('show');
       };
   
@@ -231,12 +234,33 @@
   
       const submitProduct = async () => {
         errors.value = [];
-        if (title.value && 
-        productDescription.value && 
-        brand.value && 
-        rating.value && 
-        selectedCategory.value) {
-          try {
+        if (title.value) {
+          if (productIdToEdit.value) {
+            try {
+              await updateProduct(productIdToEdit.value, {
+                title: title.value,
+                description: productDescription.value,
+                brand: brand.value,
+                avg_rating: rating.value,
+                category_id: selectedCategory.value
+              });
+       
+              for (const row of rowData.value) {
+                if (row.price) {
+                  await saveProductMarketPrice(row);
+                }
+              }
+
+              cleanValues();
+              rowData.value = [];
+              $('#productModal').modal('hide');
+              fetchProducts();
+            } catch (error) {
+              console.error(error);
+            }
+          }
+          else{
+            try {
             await createProduct({
               title: title.value,
               description: productDescription.value,
@@ -244,16 +268,14 @@
               avg_rating: rating.value,
               category_id: selectedCategory.value
             });
-            title.value = '';
-            productDescription.value = '';
-            brand.value = '';
-            rating.value = '';
-            selectedCategory.value = '';
+            
+            cleanValues();
             $('#productModal').modal('hide');
             fetchProducts();
           } catch (error) {
             console.error(error);
           }
+        }
         } else {
           if (!title.value) errors.value.push('Title is required');
           if (!productDescription.value) errors.value.push('Description is required');
@@ -282,12 +304,14 @@
               brand.value = product.brand;
               rating.value = product.avg_rating;
               selectedCategory.value = product.category_id;
+              $('#roleModalLabel').text('Edit Product');
               $('#productModal').modal('show');
           }
       } catch (error) {
           console.error(error);
       }
     };
+
     const addRow = () => {
       rowData.value.push({
         market: '',
@@ -302,37 +326,8 @@
       scrapingError.value = '';
     };
 
-    const updateProduct = async () => {
-      try {
-          await updateProductRequest(productIdToEdit.value, {
-            title: title.value,
-            description: productDescription.value,
-            brand: brand.value,
-            avg_rating: rating.value,
-            category_id: selectedCategory.value
-          });
-       
-          for (const row of rowData.value) {
-            if (row.price) {
-              await saveProductMarketPrice(row);
-            }
-          }
-
-          cleanValues();
-          rowData.value = [];
-          $('#productModal').modal('hide');
-          fetchProducts();
-      } catch (error) {
-        console.error(error);
-      }
-    };
     const saveProductMarketPrice = async (row) => {
       try {
-        console.log(
-            '\nproductIdToEdit:' + productIdToEdit.value,
-            '\nRow price' + row.price, 
-            '\nrow link ' + row.link,
-            '\nrow tag' + row.tag + '\n');
         await createProductMarketPrice(
           {
             market_id: 5, // mudar depois -> market padrao -> o scraper tem de scrapar o market e verificar se existe
@@ -354,7 +349,6 @@
       brand.value = '';
       rating.value = '';
       selectedCategory.value = '';
-      productIdToEdit.value = null;
     }
     const getCategoryDescription = (categoryId) => {
         const cat = categories.value.find(cat => cat.id === categoryId);
@@ -398,8 +392,6 @@
       getCategoryDescription,
       categoryId,
       editProduct,
-      updateProduct,
-      productIdToEdit,
       addRow,
       removeRow,
       rowData,
@@ -409,7 +401,10 @@
       scrapingError,
       calculateLinkInfo,
       cleanValues,
-      saveProductMarketPrice
+      saveProductMarketPrice,
+      extractMarketName,
+      updateProduct,
+      createProductMarketPrice
     };
     }
   };

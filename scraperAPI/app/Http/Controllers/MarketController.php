@@ -35,11 +35,11 @@ class MarketController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'description' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'logo' => 'required|string|max:255',
         ]);
     
-        $market = Role::findOrFail($id);
+        $market = Market::findOrFail($id);
     
         $market->update($validatedData);
     

@@ -25,7 +25,7 @@
                         <td class="align-middle">
                             <a class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                 <div class="d-flex justify-content-around">
-                                  <i class="fas fa-edit" @click.prevent="editMarket(market)"></i>
+                                  <i class="fas fa-edit" @click.prevent="editMarket(market.id)"></i>
                                   <i class="fas fa-trash" @click.prevent="destroyMarket(market.id)"></i>
                                 </div>
                             </a>
@@ -43,7 +43,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="marketModalLabel">Create Market</h5>
+              <h5 class="modal-title" id="marketModalLabel">Market Information</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form @submit.prevent="submitMarket" method="post">
@@ -103,41 +103,59 @@
       };
   
       const submitMarket = async () => {
-      errors.value = [];
-      if (name.value && logo.value) {
-        try {
-          if (marketIdToEdit.value) {
-            await updateMarket(marketIdToEdit.value, { description: description.value });
-          } else {
-            await createMarket({ description: description.value });
+        errors.value = [];
+        if (name.value && logo.value) {
+          try {
+            if (marketIdToEdit.value) {
+              await updateMarket(marketIdToEdit.value, { 
+                name: name.value,
+                logo: logo.value
+              });
+              $('#marketModal').modal('hide');
+              cleanForm();
+              fetchMarkets();
+            } 
+            else {
+              await createMarket({ 
+                name: name.value,
+                logo: logo.value
+              });
+              $('#marketModal').modal('hide');
+              cleanForm();
+              fetchMarkets();
+            }
+          } catch (error) {
+            console.error(error);
           }
-          description.value = '';
-          $('#roleModal').modal('hide');
-          fetchMarkets();
+        } else {
+          errors.value.push('Name is required');
+        }
+      };
+
+      const editMarket = async (id) => {
+        try {
+          marketIdToEdit.value = id;
+          const market = markets.value.find(market => market.id === id);
+              if (market) {
+                name.value = market.name;
+                logo.value = market.logo;
+              }
+
+          $('#marketModal').modal('show');
         } catch (error) {
           console.error(error);
         }
-      } else {
-        errors.value.push('Description is required');
-      }
-    };
-    const editMarket = async (market) => {
-    try {
-      marketIdToEdit.value = market.id;
-      name.value = market.name;
-      logo.value = market.logo;
-      $('#marketModalLabel').text('Edit Market');
-      $('#marketModal').modal('show');
-    } catch (error) {
-      console.error(error);
-    }
-  };
-    const showModal = () => {
-      marketIdToEdit.value = null;
-      description.value = '';
-      $('#marketModalLabel').text('Create Market');
-      $('#marketModal').modal('show');
-    };
+      };
+      
+      const cleanForm = () => {
+        name.value = '';
+        logo.value = '';
+      };
+
+      const showModal = () => {
+        cleanForm();
+        $('#marketModal').modal('show');
+      };
       onMounted(fetchMarkets);
   
       return {
@@ -152,7 +170,8 @@
         deleteMarket,
         createMarket,
         updateMarket,
-        editMarket
+        editMarket,
+        cleanForm
       };
     }
   };

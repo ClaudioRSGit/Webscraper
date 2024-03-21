@@ -42,11 +42,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->update($request->all());
 
-        return response()->json([
-            'message' => 'Category updated successfully!',
-            'code' => 200,
-            'category' => $category
-        ]);
+        return response()->json($category);
     }
 
     public function destroy($id)

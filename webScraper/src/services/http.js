@@ -232,6 +232,7 @@ export const updateMarket = async (id, updatedMarketData) => {
     throw error;
   }
 };
+
 export const updateProduct = async (id, updatedProductData) => {
   try {
     const response = await axiosInstance.put(`/updateProduct/${id}`, updatedProductData);

@@ -39,8 +39,7 @@ export const useAuth = defineStore('auth', () => {
 
     async function checkToken(){
         try{
-            const data = await http.get('/auth/verify', {
-            });
+            const data = await http.get('/auth/verify');
             const userInfo = data.user;
             setUser(userInfo);
             setIsAuth(true);
