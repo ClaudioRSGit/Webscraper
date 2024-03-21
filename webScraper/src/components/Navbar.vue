@@ -3,7 +3,7 @@
     <div class="container px-lg-3">
       <nav class="navbar navbar-expand-lg py-3 px-lg-0">
         <span class="navbar-brand">
-          <router-link class="fw-bold text-uppercase text-dark" :to="{ name: 'home' }">E Scraper</router-link>
+          <router-link class="fw-bold text-uppercase text-gold" :to="{ name: 'home' }">E Scraper</router-link>
         </span>
         <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -16,7 +16,7 @@
           </ul>
           <ul class="navbar-nav ms-auto">               
             <li class="nav-item" v-if="auth.isAuth">
-              <router-link class="nav-link" :to="{ name: 'administration' }">Administração</router-link>
+              <router-link class="nav-link text-gold" :to="{ name: 'administration' }">Administração</router-link>
             </li>
             <li class="nav-item" v-if="auth.isAuth">
               <i class="far fa-heart me-3"></i>
@@ -73,5 +73,7 @@ export default{
 </script>
 
 <style scoped>
-
+.text-gold{
+  color: goldenrod;
+}
 </style>

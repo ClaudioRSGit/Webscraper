@@ -7,7 +7,6 @@
           </div>
           <Services />
     </div>
-    <Footer />
 </template>
 
 <script setup>

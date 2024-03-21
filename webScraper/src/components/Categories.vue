@@ -111,7 +111,7 @@ img{
 }
 .category-item {
   position: relative;
-  color: #343a40;
+  color: goldenrod;
   transition: all 0.3s;
 }
 
@@ -122,7 +122,7 @@ img{
 .category-item-title {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: #dadbdbd2;
+  background: #dadbdb;
   text-transform: uppercase;
   letter-spacing: 0.07em;
   position: absolute;

@@ -32,7 +32,7 @@
                 </button>   
                 </div>             
               </form>
-              <p class="text-center mt-3">Ainda não é cliente <a href="/register">Crie uma conta</a></p>
+              <p class="text-center mt-3">Ainda não é cliente? <router-link class="nav-link" :to="{ name: 'register' }">Crie uma conta</router-link></p>
             </div>
           </div>
         </div>

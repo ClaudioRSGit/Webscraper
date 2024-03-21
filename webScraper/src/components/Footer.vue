@@ -1,5 +1,5 @@
 <template>
-    <footer class="bg-dark text-white">
+    <footer class="bg-dark text-white" v-if="!isPaginaOculta">
         <div class="container py-4">
           <div class="row py-3">
             <div class="col-md-4 mb-3 mb-md-0">
@@ -32,8 +32,20 @@
       </footer>
 </template>
 
-<script setup>
-
+<script>
+export default{
+  name: 'footer',
+  setup(){
+    return{
+      
+    }
+  },
+  computed: {
+    isPaginaOculta() {
+      return this.$route.name === 'administration';
+    },
+  }
+}
 </script>
 
 <style scoped>

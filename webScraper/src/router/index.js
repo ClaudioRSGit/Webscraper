@@ -20,6 +20,12 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
     {
+      path: '/product/:id',
+      name: 'productDetails',
+      component: () => import('../views/ProductDetailsView.vue'),
+      props: true
+    },
+    {
       path: '/register',
       name: 'register',
       component: () => import('../views/RegisterView.vue')
@@ -28,7 +34,7 @@ const router = createRouter({
       path: '/administration',
       name: 'administration',
       component: () => import('../views/AdministrationView.vue'),
-        meta: {
+      meta: {
         auth: true,
         admin: true
       }
@@ -41,7 +47,7 @@ const router = createRouter({
   ]
 })
 
-//before each route check if user is logged in
+// before each route check if user is logged in
 router.beforeEach(routes);
 
 export default router

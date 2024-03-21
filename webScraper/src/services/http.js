@@ -66,7 +66,15 @@ export const getProducts = async () => {
       throw error;
     }
 };
-
+export const getProductsById = async (id) => {
+  try {
+    const response = await axiosInstance.get('/product/' + id);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 export const getMarkets = async () => {
     try {
       const response = await axiosInstance.get('/markets');

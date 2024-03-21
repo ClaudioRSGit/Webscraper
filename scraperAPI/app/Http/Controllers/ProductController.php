@@ -18,6 +18,17 @@ class ProductController extends Controller
         return response()->json($products, 200);
     }
 
+    public function getProductById($id)
+    {
+        $product = Product::with(['image' => function ($query) {
+            $query->select('id', 'link', 'product_id');
+        }, 'productMarketPrices' => function ($query) {
+            $query->select('id', 'product_id', 'market_id', 'price', 'link', 'currency', 'tag');
+        }])->find($id);
+
+        return response()->json($product, 200);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

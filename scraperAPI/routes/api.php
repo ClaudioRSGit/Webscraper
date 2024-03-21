@@ -20,6 +20,7 @@ Route::get('/scrape', 'ScrapingController@scrape');
 Route::get('/users', 'UserController@index');
 Route::get('/user/{id}', 'UserController@getUserById');
 Route::get('/products', 'ProductController@index');
+Route::get('/product/{id}', 'ProductController@getProductById');
 Route::get('/images', 'ImageController@index');
 Route::get('/roles', 'RoleController@index');
 Route::get('/categories', 'CategoryController@index');
