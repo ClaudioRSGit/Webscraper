@@ -1,28 +1,39 @@
-import {useAuth} from '@/stores/auth.js'
+import { useAuth } from '@/stores/auth.js'
 import { ref } from 'vue';
 
-export default async function routes(to,from,next){
+export default async function routes(to, from, next) {
   const auth = useAuth();
   const requiresAuth = to.meta?.auth;
   const requireAdmin = to.meta?.admin;
   
   try {
-    if (requiresAuth && requireAdmin && auth.user.role_id !== 1) {
-      next({ name: 'login' });
-    } else {
-      // Check if the route requires authentication
-      if (requiresAuth) {
-        // Check if user is authenticated
-        if (auth.isAuth) {
-          next();
-        } else {
-          // Redirect to login if user is not authenticated
+    // Check if the route requires authentication
+    if (requiresAuth) {
+      // Check if user is authenticated
+      if (!auth.isAuth) {
+        await auth.checkToken();
+      }
+
+      // Check authentication after token check
+      if (auth.isAuth) {
+        // Check if admin access is required
+        if (requireAdmin && auth.user.role_id !== 1) {
           next({ name: 'login' });
+        } else {
+          // Redirect to administration if user is authenticated and has admin access
+          if (to.name !== 'administration') {
+            next({ name: 'administration' });
+          } else {
+            next();
+          }
         }
       } else {
-        // Continue to the route if authentication is not required
-        next();
+        // Redirect to login if user is not authenticated
+        next({ name: 'login' });
       }
+    } else {
+      // Continue to the route if authentication is not required
+      next();
     }
   } catch (error) {
     console.error('Error in route navigation:', error);

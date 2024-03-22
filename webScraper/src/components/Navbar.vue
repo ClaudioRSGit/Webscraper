@@ -30,9 +30,7 @@
         </div>
       </nav>
     </div>
-  </header>
-  <router-view></router-view>
-      
+  </header>      
 </template>
 
 <script>
@@ -44,14 +42,6 @@ export default{
   setup(){
     const auth = useAuth();
     const router = useRouter();
-
-    if (auth.isAuth) {
-      if (auth.user.role_id === 1) {
-          router.push({ name: 'administration' });
-      } else {
-          router.push({ name: 'home' });
-      }
-    }
 
     function logout() {
       auth.logout();

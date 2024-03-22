@@ -3,6 +3,10 @@
       <Hero />
       <Categories />
           <div class="row">
+            <header class="text-center">
+              <h2 class="text-uppercase mb-4">Top Produtos da semana</h2>
+              <p class="small text-muted small text-uppercase mb-5">Escolha já o seu!</p>
+            </header>
             <ProductGrid />
           </div>
           <Services />

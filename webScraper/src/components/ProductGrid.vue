@@ -1,9 +1,5 @@
 <template>
   <div class="container">
-    <header class="text-center">
-    <h2 class="text-uppercase mb-4">Top Produtos da semana</h2>
-    <p class="small text-muted small text-uppercase mb-5">Escolha já o seu!</p>
-  </header>
   <div v-if="products.length > 0">
     <div class="d-flex container px-5 gap-2">
     <div class="col-xl-3 col-lg-4 col-sm-6">

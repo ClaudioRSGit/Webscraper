@@ -13,6 +13,7 @@
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Brand</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Rating</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Category</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mercado</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
                         </tr>
                     </thead>
@@ -34,7 +35,6 @@
                               </div>
                             </div>
                         </td>
-                          
                         <td class="align-middle text-center text-sm">
                             <span class="text-xs text-secondary mb-0">{{ product.brand }}</span>
                         </td>
@@ -43,6 +43,12 @@
                         </td>
                         <td class="align-middle text-center">
                             <span class="text-secondary text-xs font-weight-bold">{{ getCategoryDescription(product.category_id) }}</span>
+                        </td>
+                        <td class="align-middle text-center" v-if="product.product_market_prices && product.product_market_prices.length > 0">
+                          <span class="text-secondary text-xs font-weight-bold">{{ getMarketDescription(product.product_market_prices[0].market_id) ? getMarketDescription(product.product_market_prices[0].market_id) : 'Undefined' }}</span>
+                        </td>
+                        <td class="align-middle text-center" v-else>
+                          <span class="text-secondary text-xs font-weight-bold">Undefined</span>
                         </td>
                         <td class="align-middle">
                             <a class="text-secondary font-weight-bold text-xs" data-toggle="tooltip">
@@ -161,7 +167,7 @@
   <script>
   import axios from 'axios';
   import { ref, onMounted } from 'vue';
-  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct, createProductMarketPrice } from '@/services/http.js';
+  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct, createProductMarketPrice, getMarkets } from '@/services/http.js';
   import { scrapPrice } from '@/services/scraper.js';
 
   export default {
@@ -175,6 +181,7 @@
       const selectedCategory = ref('');
       const errors = ref([]);
       const categories = ref([]);
+      const markets = ref([]);
       const categoryId = ref('');
       const productIdToEdit = ref(null);
       const rowData = ref([]);
@@ -231,7 +238,15 @@
           console.error(error);
         }
       };
-  
+      
+      const fetchMarkets = async () => {
+        try {
+            markets.value = await getMarkets();
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
       const submitProduct = async () => {
         errors.value = [];
         if (title.value) {
@@ -350,9 +365,15 @@
       rating.value = '';
       selectedCategory.value = '';
     }
+    
     const getCategoryDescription = (categoryId) => {
         const cat = categories.value.find(cat => cat.id === categoryId);
         return cat ? cat.description : 'Unknown Category';
+    };
+    
+    const getMarketDescription = (market_id) => {
+        const market = markets.value.find(market => market.id === market_id);
+        return market ? market.name : 'Unknown Market';
     };
 
     const calculateLinkInfo = () => {
@@ -371,6 +392,7 @@
     onMounted(() => {
       fetchProducts();
       fetchCategories();
+      fetchMarkets();
     });
 
     return {
@@ -390,6 +412,9 @@
       createProduct,
       getCategories,
       getCategoryDescription,
+      fetchProducts,
+      fetchCategories,
+      getMarketDescription,
       categoryId,
       editProduct,
       addRow,
@@ -404,7 +429,9 @@
       saveProductMarketPrice,
       extractMarketName,
       updateProduct,
-      createProductMarketPrice
+      createProductMarketPrice,
+      getMarkets,
+      fetchMarkets
     };
     }
   };

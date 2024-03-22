@@ -93,7 +93,15 @@ export const getPendingProducts = async () => {
     throw error;
   }
 };
-
+export const getPriceHistoryById = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/priceHistoryById/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 //post functions
 export const createCategory = async (newCategory) => {
     try {
@@ -147,6 +155,7 @@ export const createProduct = async (newProduct) => {
 export const createProductMarketPrice = async (newProductMarketPrice) => {
   try {
       const response = await axiosInstance.post('/productMarketPrices', newProductMarketPrice);
+      console.log('dados recolhidos: ' + response.data);
       return response.data;
   } catch (error) {
       console.error(error);

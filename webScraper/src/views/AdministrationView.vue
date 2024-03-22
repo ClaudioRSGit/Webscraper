@@ -22,7 +22,7 @@
             </a>
             </div>
             <hr class="horizontal dark mt-0">
-            <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+            <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item" @click="showTable('dashboard')" :class="{ 'active': activeItem === 'dashboard' }">
                 <a class="nav-link">
@@ -202,5 +202,14 @@ onMounted(() => {
         vertical-align: middle;
         text-decoration: none!important;
         box-shadow: none!important;
+    }
+    aside{
+        max-height: 80vh;
+    }
+    .content{
+        min-height: 80vh; 
+    }
+    #sidenav-collapse-main{
+        min-height: 60vh;
     }
 </style>

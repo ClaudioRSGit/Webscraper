@@ -6,7 +6,7 @@ import router from '../router'
 export const useAuth = defineStore('auth', () => {
     const user = ref({});
     const isAuth = ref(false);
-
+    
     function setUser(userValue){
         user.value = userValue;
     }
@@ -43,6 +43,7 @@ export const useAuth = defineStore('auth', () => {
             const userInfo = data.user;
             setUser(userInfo);
             setIsAuth(true);
+
             return data;
         }
         catch(error){

@@ -27,6 +27,7 @@ Route::get('/categories', 'CategoryController@index');
 Route::get('/markets', 'MarketController@index');
 Route::get('/pendingProducts', 'PendingProductController@index');
 Route::get('/productMarketPrices', 'ProductMarketPriceController@index');
+Route::get('/priceHistoryById/{id}', 'PriceHistoryController@priceHistoryById');
 
 //post routes
 Route::post('/createCategory', 'CategoryController@store');

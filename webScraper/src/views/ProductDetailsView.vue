@@ -8,15 +8,14 @@
                 <div class="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
                   <div class="swiper product-slider-thumbs">
                     <div class="swiper-wrapper">
-                      <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></div>
-                      <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></div>
-                      <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></div>
-                      <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></div>
+                      <div v-if="product" v-for="(image, index) in product.image" :key="index" class="swiper-slide h-auto swiper-thumb-item mb-3">
+                        <img class="w-100" v-if="image.link" :src="image.link" alt="...">
+                      </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-10 order-1 order-sm-2">
-                      <img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="...">
+                  <img class="img-fluid w-100" v-if="product && product.image && product.image.length > 0 && product.image[0].link" :src="product.image[0].link" alt="...">
                 </div>
               </div>
             </div>
@@ -29,8 +28,8 @@
                 </span>
                 <span class="px-3 py-2 mb-3 mb-1 text-muted ">
                     <strong class="text-dark ">Tags:</strong>
-                    <a class="reset-anchor ms-2 tag" href="#!">Innovation</a>
-                    <a class="reset-anchor ms-2 tag" href="#!">Innovation</a>
+                    <span class="reset-anchor ms-2 tag" >Innovation</span>
+                    <span class="reset-anchor ms-2 tag" >Eletronics</span>
                 </span>
               <ul class="list-inline mb-2 mt-3 text-sm">
                 <li class="list-inline-item m-0"><i class="fas fa-star small text-warning"></i></li>
@@ -45,13 +44,13 @@
           </div>
           <!-- DETAILS TABS-->
           <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
-            <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Description</a></li>
+            <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Descrição</a></li>
             <li class="nav-item"><a class="nav-link text-uppercase" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a></li>
           </ul>
           <div class="tab-content mb-5" id="myTabContent">
             <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
               <div class="p-4 p-lg-5 bg-white">
-                <h6 class="text-uppercase">Product description </h6>
+                <h6 class="text-uppercase fw-bold">Descrição do Produto</h6>
                 <p class="text-muted text-sm mb-0" v-if="product && product.description">{{ product.description }}</p>
               </div>
             </div>
@@ -97,35 +96,29 @@
     
         <!-- product market prices-->
         <div class="container">
-            <h1>Mercados</h1>
-    <div class="card my-4 py-4" v-if="product && product.product_market_prices && product.product_market_prices.length > 0">
-        <div v-for="(marketPrice, index) in product.product_market_prices" :key="index">
-            <!-- Exibir o nome do mercado -->
-            <img v-if="marketPrice.link" :src="marketPrice.link"></img>
-            <h1>{{ marketPrice.market.name }}</h1>
-            <h2>{{ marketPrice.link }}</h2>
-
-            <h2 v-if="marketPrice.market">{{ marketPrice.market.name }}</h2>
-            <!-- Exibir o preço do mercado -->
-            <p v-if="marketPrice.price">{{ marketPrice.price }}</p>
-            <!-- Botão para redirecionar para o link fornecido pelo preço do mercado -->
-            <a :href="marketPrice.link" class="btn btn-primary" target="_blank">Comprar</a>
-        </div>
-    </div>
-          <!--Price histories-->
-          <h1>Historico de Preços</h1>
-          <div class="container-fluid my-3">
-            <canvas id="myChart"></canvas>
+          <div v-if="product && product.product_market_prices">
+            <div class="my-4 py-4">
+                <h2>Todas as ofertas</h2>
+                <div class="d-flex justify-content-between bg-white my-3 align-items-center p-3" v-for="(marketPrice, index) in product.product_market_prices" :key="index">
+                    <img v-if="marketPrice.market && marketPrice.market.logo" :src="marketPrice.market.logo" class="market-logo" alt="Market Logo">
+                    <span class="text-sm mb-1" v-if="product && product.title">{{ product.title }}</span>
+                  <span class="text-golden fw-bold mb-0" v-if="marketPrice.price">{{ marketPrice.price }} {{ marketPrice.currency }}</span>
+                  <a :href="marketPrice.link" class="btn bg-golden text-white ml-auto" target="_blank">Ver Produto</a>
+              </div>
+              </div>
             </div>
           <!--Price histories-->
-          </div>
+          <h2>Historico de Preços</h2>
+          <!--Price histories-->
+        </div>
         <!-- product market prices-->
 
           <!-- RELATED PRODUCTS-->
-          <h2 class="h5 text-uppercase mb-4">Related products</h2>
-          <div class="row">
+          <div class="row container">
+            <h2 class="mb-4">Produtos Relacionados</h2>
+            <ProductGrid />
             <!-- PRODUCT-->
-            <div class="col-lg-3 col-sm-6">
+            <!-- <div class="col-lg-3 col-sm-6">
               <div class="product text-center skel-loader">
                 <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></a>
                   <div class="product-overlay">
@@ -138,9 +131,9 @@
                 <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
                 <p class="small text-muted">$351</p>
               </div>
-            </div>
+            </div> -->
             <!-- PRODUCT-->
-            <div class="col-lg-3 col-sm-6">
+            <!-- <div class="col-lg-3 col-sm-6">
               <div class="product text-center skel-loader">
                 <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></a>
                   <div class="product-overlay">
@@ -153,9 +146,9 @@
                 <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
                 <p class="small text-muted">$351</p>
               </div>
-            </div>
+            </div> -->
             <!-- PRODUCT-->
-            <div class="col-lg-3 col-sm-6">
+            <!-- <div class="col-lg-3 col-sm-6">
               <div class="product text-center skel-loader">
                 <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></a>
                   <div class="product-overlay">
@@ -168,9 +161,9 @@
                 <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
                 <p class="small text-muted">$351</p>
               </div>
-            </div>
+            </div> -->
             <!-- PRODUCT-->
-            <div class="col-lg-3 col-sm-6">
+            <!-- <div class="col-lg-3 col-sm-6">
               <div class="product text-center skel-loader">
                 <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></a>
                   <div class="product-overlay">
@@ -183,83 +176,56 @@
                 <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
                 <p class="small text-muted">$351</p>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </section>
 </template>
 
-<script>
-import { getProductsById} from '../services/http';
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { getProductsById } from '../services/http';
+import ProductGrid from '@/components/ProductGrid.vue';
 
-export default {
-  mounted() {
-    this.fetchProductById();
-    this.loadChartJS().then(() => {
-      const data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-          label: 'Sales',
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1,
-          data: [65, 59, 80, 81, 56, 55, 40],
-        }],
-      };
+const product = ref(null);
+const route = useRoute();
 
-      const config = {
-        type: 'bar',
-        data: data,
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      };
+onMounted(async () => {
+  await fetchProductById();
+});
 
-      var myChart = new Chart(document.getElementById('myChart'), config);
-    });
-  },
-  methods: {
-    async fetchProductById() {
-      try {
-        const productId = this.$route.params.id;
-        const product = await getProductsById(productId);
-        this.product = product;
-        console.log('Retrieved product:', product);
-      } catch (error) {
-        console.error('Error fetching product by ID:', error);
-      }
-    },
-    loadChartJS() {
-      return new Promise((resolve, reject) => {
-        if (window.Chart) {
-          resolve();
-        } else {
-          const script = document.createElement('script');
-          script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-          script.async = true;
-          script.onload = resolve;
-          script.onerror = reject;
-          document.head.appendChild(script);
-        }
-      });
-    }
-  },
-  created() {
-    this.productId = this.$route.params.id;
-    this.fetchProductById();
+const fetchProductById = async () => {
+  try {
+    const productId = route.params.id;
+    product.value = await getProductsById(productId);
+    console.log('Retrieved product:', product.value);
+  } catch (error) {
+    console.error('Error fetching product by ID:', error);
   }
-}
+};
 </script>
 
 <style scoped>
+img{
+  object-fit:contain;  
+  transition: 0.4s;
+  cursor: pointer;
+}
+.market-logo{
+  width: 100px;
+  height: 50px;
+}
+.bg-golden{
+  background-color: goldenrod;
+}
+.text-golden, .nav-link{
+  color: goldenrod;
+}
 .tag{
     border: 1px solid #000;
     padding: 5px;
-    background-color: darkgray;
+    background-color: goldenrod;
     color: #FFF;
 }
 .product img {

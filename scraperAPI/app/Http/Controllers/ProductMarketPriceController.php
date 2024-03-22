@@ -9,7 +9,7 @@ class ProductMarketPriceController extends Controller
 {
     public function index()
     {
-        $productMarketPrices = ProductMarketPrice::all();
+        $productMarketPrices = ProductMarketPrice::with('market', 'product')->get();
         return response()->json($productMarketPrices);
     }
 
