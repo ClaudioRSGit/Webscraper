@@ -107,6 +107,7 @@
               </div>
                 <!--  -->
                 <div class="infinite-scroll">
+                  <h4>Markets</h4>
                   <div v-for="(row, index) in rowData" :key="index">
                     <div class="border rounded border-secondary p-2 mb-3" :class="{ 'border-success': row.price, 'border-danger': !row.price }">
                       <div class="row mb-3 col-12">
@@ -171,7 +172,7 @@
   <script>
   import axios from 'axios';
   import { ref, onMounted } from 'vue';
-  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct, createProductMarketPrice, getMarkets } from '@/services/http.js';
+  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct, createProductMarketPrice, getMarkets, getProductsById } from '@/services/http.js';
   import { scrapPrice } from '@/services/scraper.js';
 
   export default {
@@ -317,13 +318,24 @@
     const editProduct = async (id) => {
       try {
           productIdToEdit.value = id;
+          const productDetails = await getProductsById(id);
           const product = products.value.find(product => product.id === id);
-          if (product) {
+          if (productDetails) {
               title.value = product.title;
               productDescription.value = product.description;
               brand.value = product.brand;
               rating.value = product.avg_rating;
               selectedCategory.value = product.category_id;
+
+              if (productDetails.product_market_prices && productDetails.product_market_prices.length > 0) {
+                rowData.value = productDetails.product_market_prices.map(price => ({
+                  market: price.market_id,
+                  link: price.link,
+                  tag: price.tag,
+                  price: price.price
+                }));
+              }
+
               $('#roleModalLabel').text('Edit Product');
               $('#productModal').modal('show');
           }
@@ -438,7 +450,8 @@
       getMarkets,
       fetchMarkets,
       markets,
-      selectedMarket
+      selectedMarket,
+      getProductsById
     };
     }
   };
