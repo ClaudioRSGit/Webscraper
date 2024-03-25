@@ -6,22 +6,23 @@ class PriceHistorySeeder extends Seeder
 {
     public function run()
     {        
-        DB::table('price_histories')->insert([
-            'product_market_price_id' => 1,
-            'avg_price' => 100.00,
-            'collected_at' => now()->format('Y-m-d H:i:s')
-        ]);
-
-        DB::table('price_histories')->insert([
-            'product_market_price_id' => 1,
-            'avg_price' => 105.00,
-            'collected_at' => now()->subDay()->format('Y-m-d H:i:s')
-        ]);
-
-        DB::table('price_histories')->insert([
-            'product_market_price_id' => 1,
-            'avg_price' => 110.00,
-            'collected_at' => now()->subDays(2)->format('Y-m-d H:i:s')
-        ]);
+        $startDate = now()->subMonth();
+        $endDate = now();
+        
+        $productId = 1;
+        
+        $currentDate = $startDate->copy();
+        
+        while ($currentDate->lte($endDate)) {
+            $avgPrice = rand(90, 120);
+            
+            DB::table('price_histories')->insert([
+                'product_market_price_id' => $productId,
+                'avg_price' => $avgPrice,
+                'collected_at' => $currentDate->format('Y-m-d H:i:s')
+            ]);
+            
+            $currentDate->addDay();
+        }
     }
 }

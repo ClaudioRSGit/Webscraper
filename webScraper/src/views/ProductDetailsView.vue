@@ -110,6 +110,9 @@
           <!--Price histories-->
           <h2>Historico de Preços</h2>
           <!--Price histories-->
+          <div>
+            <canvas id="myChart" width="400" height="150"></canvas>
+          </div>
         </div>
         <!-- product market prices-->
 
@@ -185,24 +188,61 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { getProductsById } from '../services/http';
+import { getProductsById, getPriceHistoryById  } from '../services/http';
 import ProductGrid from '@/components/ProductGrid.vue';
+import Chart from 'chart.js/auto';
 
 const product = ref(null);
+const priceHistory = ref([]);
 const route = useRoute();
 
 onMounted(async () => {
-  await fetchProductById();
+  await fetchProductAndPriceHistory();
+  renderChart();
 });
 
-const fetchProductById = async () => {
+const fetchProductAndPriceHistory = async () => {
   try {
     const productId = route.params.id;
     product.value = await getProductsById(productId);
-    console.log('Retrieved product:', product.value);
+
+    priceHistory.value = await getPriceHistoryById(productId);
   } catch (error) {
-    console.error('Error fetching product by ID:', error);
+    console.error('Error fetching product and price history:', error);
   }
+};
+
+const renderChart = () => {
+  const ctx = document.getElementById('myChart');
+
+  const labels = priceHistory.value.map(entry => {
+    const date = new Date(entry.collected_at);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${day}/${month}`;
+  });
+  const data = priceHistory.value.map(entry => parseFloat(entry.avg_price));
+
+  const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Preço médio mensal',
+            data: data,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: false
+            }
+        }
+    }
+  });
 };
 </script>
 
