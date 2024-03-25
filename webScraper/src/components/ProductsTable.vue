@@ -69,7 +69,7 @@
         </div>
     <div>
       <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="productModalLabel">Product Information</h5>
@@ -112,7 +112,11 @@
                       <div class="row mb-3 col-12">
                         <div class="col-2">
                           <label for="market" class="form-label">Market</label>
-                          <input class="form-control" type="text" v-model="row.market" :id="'market' + index" :name="'market' + index" placeholder="Market">
+                          <!-- <input class="form-control" type="text" v-model="row.market" :id="'market' + index" :name="'market' + index" placeholder="Market"> -->
+                          <select class="form-select" v-model="selectedMarket" id="market" name="market" placeholder="Market">
+                            <option value="">Select Market</option>
+                            <option v-for="market in markets" :key="market.id" :value="market.id">{{ market.name }}</option>
+                          </select>
                         </div>
                         <div class="col-4">
                           <label for="link" class="form-label">Link</label>
@@ -187,7 +191,8 @@
       const rowData = ref([]);
       const prodPrice = ref('');
       const scrapingError = ref('');
-
+      const selectedMarket = ref('');
+      
       const handleScraping = async (link, tag, index) => {
         try {
           prodPrice.value = await scrapPrice(link, tag);
@@ -345,7 +350,7 @@
       try {
         await createProductMarketPrice(
           {
-            market_id: 5, // mudar depois -> market padrao -> o scraper tem de scrapar o market e verificar se existe
+            market_id: selectedMarket.value,
             product_id: productIdToEdit.value,
             price: row.price,
             link: row.link,
@@ -431,7 +436,9 @@
       updateProduct,
       createProductMarketPrice,
       getMarkets,
-      fetchMarkets
+      fetchMarkets,
+      markets,
+      selectedMarket
     };
     }
   };

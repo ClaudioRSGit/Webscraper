@@ -14,7 +14,12 @@ trait ScrapingTrait
     protected function scrapePrice($client, $link, $tag)
     {
         $crawler = $client->request('GET', $link);
-        $price = $crawler->filter($tag)->first()->text();
+
+        $priceText = $crawler->filter($tag)->first()->text();
+        $priceNumber = preg_replace("/[^0-9,.]/", "", $priceText);
+        $priceNumber = str_replace(",", ".", $priceNumber);
+        
+        $price = (float) $priceNumber;
 
         return $price;
     }
