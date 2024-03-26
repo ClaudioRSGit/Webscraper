@@ -1,5 +1,5 @@
 <template>
-    <footer class="bg-dark text-white" v-if="!isPaginaOculta">
+    <div class="bg-dark text-white" v-if="!isPaginaOculta">
         <div class="container py-4">
           <div class="row py-3">
             <div class="col-md-4 mb-3 mb-md-0">
@@ -29,12 +29,12 @@
           </div>
           
         </div>
-      </footer>
+      </div>
 </template>
 
 <script>
 export default{
-  name: 'footer',
+  name: 'Footer',
   setup(){
     return{
       

@@ -14,7 +14,7 @@ class MarketSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Medis Markt',
+                'name' => 'Media Markt',
                 'logo' => 'https://cdn.shopify.com/s/files/1/2700/1230/files/Media_Markt.withR5x.png?height=628&pad_color=ffffff&v=1613681078&width=1200',
                 'created_at' => now(),
                 'updated_at' => now(),

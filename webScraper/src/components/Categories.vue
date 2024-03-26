@@ -1,9 +1,5 @@
 <template>
   <div class="pt-5">
-    <header class="text-center">
-      <p class="small text-muted small text-uppercase mb-1">Carefully created collections</p>
-      <h2 class="h5 text-uppercase mb-4">Browse our categories</h2>
-
     <div class="row" v-if="categories.length > 0">
       <div class="container px-5">
         <div class="row mx-5 img-container">
@@ -56,7 +52,6 @@
     <div v-else class="text-center">
       <img src="https://user-images.githubusercontent.com/85354530/157868037-0f50e466-62c6-4c2c-8fee-fc5b96627b63.gif">
     </div>
-  </header>
   </div>
 </template>
 

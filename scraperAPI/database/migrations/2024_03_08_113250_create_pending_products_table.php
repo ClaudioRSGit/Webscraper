@@ -12,7 +12,7 @@ class CreatePendingProductsTable extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('category');
+            $table->string('category')->nullable();
             $table->string('brand')->nullable();
             $table->string('link')->nullable();
             $table->timestamps();

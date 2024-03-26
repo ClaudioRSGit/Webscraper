@@ -102,7 +102,7 @@
               <div class="row mb-3">
                 <div class="col">
                   <label for="productDescription" class="form-label">Description</label>
-                  <input class="form-control" type="text" v-model="productDescription" id="productDescription" name="productDescription" placeholder="Insert productDescription" required>
+                  <input class="form-control" type="text" v-model="productDescription" id="productDescription" name="productDescription" placeholder="Insert Description" required>
                 </div>
               </div>
                 <!--  -->
@@ -193,7 +193,8 @@
       const prodPrice = ref('');
       const scrapingError = ref('');
       const selectedMarket = ref('');
-      
+      const productMarketData = ref([]);
+
       const handleScraping = async (link, tag, index) => {
         try {
           prodPrice.value = await scrapPrice(link, tag);
@@ -223,9 +224,10 @@
       };
       
       const showModal = () => {
+        errors.value = [];
         cleanValues();
         productIdToEdit.value = null;
-        $('#roleModalLabel').text('Add Product');
+        $('#productModalLabel').text('Add Product');
         $('#productModal').modal('show');
       };
   
@@ -329,28 +331,37 @@
 
               if (productDetails.product_market_prices && productDetails.product_market_prices.length > 0) {
                 rowData.value = productDetails.product_market_prices.map(price => ({
-                  market: price.market_id,
+                  market: selectedMarket.value,
                   link: price.link,
                   tag: price.tag,
                   price: price.price
                 }));
               }
-
-              $('#roleModalLabel').text('Edit Product');
+              selectedMarket.value = getMarketIdFromProductDetails(productDetails);
+              $('#productModalLabel').text('Edit Product');
               $('#productModal').modal('show');
+          }else{
+            selectedMarket.value = '';
           }
       } catch (error) {
           console.error(error);
       }
     };
-
+    const getMarketIdFromProductDetails = (productDetails) => {
+    if (productDetails && productDetails.product_market_prices && productDetails.product_market_prices.length > 0) {
+      return productDetails.product_market_prices[0].market_id;
+    } else {
+      return '';
+    }
+  };
     const addRow = () => {
       rowData.value.push({
         market: '',
         link: '',
         tag: '',
-        price: ''
+        price: '',
       });
+      selectedMarket.value = '';
     };
     
     const removeRow = (index) => {
@@ -376,6 +387,7 @@
       }
     };
     const cleanValues = () => {
+      rowData.value = [];
       title.value = '';
       productDescription.value = '';
       brand.value = '';
@@ -451,7 +463,9 @@
       fetchMarkets,
       markets,
       selectedMarket,
-      getProductsById
+      getProductsById,
+      productIdToEdit,
+      getMarketIdFromProductDetails
     };
     }
   };

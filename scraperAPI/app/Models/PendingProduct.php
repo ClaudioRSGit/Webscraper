@@ -12,7 +12,6 @@ class PendingProduct extends Model
     protected $fillable = [
         'title',
         'description',
-        'category',
         'brand',
         'link',
     ];

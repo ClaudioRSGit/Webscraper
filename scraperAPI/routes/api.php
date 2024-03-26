@@ -16,6 +16,10 @@ Route::post('/register', [Auth::class, 'register']);
 
 Route::get('/scrape', 'ScrapingController@scrape');
 
+//queries
+// Route::get('/products/{query}', 'ProductController@searchProduct');
+Route::get('/products/search/{query}', 'ProductController@searchByTitle');
+
 //get routes
 Route::get('/users', 'UserController@index');
 Route::get('/user/{id}', 'UserController@getUserById');
@@ -36,6 +40,7 @@ Route::post('/createRole', 'RoleController@store');
 Route::post('/createMarket', 'MarketController@store');
 Route::post('/createProduct', 'ProductController@store');
 Route::post('/productMarketPrices', 'ProductMarketPriceController@store');
+Route::post('/createPendingProduct', 'PendingProductController@store');
 
 //destroy routes
 Route::delete('/destroyUser/{id}', 'UserController@destroy');
