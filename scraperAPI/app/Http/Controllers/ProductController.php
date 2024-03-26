@@ -30,7 +30,7 @@ class ProductController extends Controller
             'productMarketPrices' => function ($query) {
                 $query->select('id', 'product_id', 'market_id', 'price', 'link', 'currency', 'tag');
             },
-            'productMarketPrices.market' // Carrega informações sobre o mercado associado
+            'productMarketPrices.market'
         ])->find($id);
 
         return response()->json($product, 200);
@@ -52,6 +52,7 @@ class ProductController extends Controller
         $product->brand = $request->input('brand');
         $product->avg_rating = $request->input('avg_rating');
         $product->category_id = $request->input('category_id');
+        $product->isActive = $request->input('isActive');
         
         $product->save();
         
@@ -70,7 +71,8 @@ class ProductController extends Controller
             $product->brand = $request->input('brand');
             $product->avg_rating = $request->input('avg_rating');
             $product->category_id = $request->input('category_id');
-            
+            $product->isActive = $request->input('isActive');
+
             $product->save();
             
             return response()->json([

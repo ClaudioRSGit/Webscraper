@@ -13,7 +13,8 @@
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Brand</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Rating</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Category</th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mercado</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Market</th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
                         </tr>
                     </thead>
@@ -49,6 +50,11 @@
                         </td>
                         <td class="align-middle text-center" v-else>
                           <span class="text-secondary text-xs font-weight-bold">Undefined</span>
+                        </td>
+                        <td class="align-middle text-center">
+                          <span class="badge badge-sm" :class="{'bg-gradient-success': product.isActive == 1, 'bg-gradient-danger': product.isActive == 0}">
+                                {{ product.isActive == 1 ? 'Active' : 'Inactive'}}
+                            </span>
                         </td>
                         <td class="align-middle">
                             <a class="text-secondary font-weight-bold text-xs" data-toggle="tooltip">
@@ -97,6 +103,13 @@
                   <div class="col">
                     <label for="rating" class="form-label">Rating (1-5)</label>
                     <input class="form-control" type="number" v-model="rating" id="rating" name="rating" min="1" max="5" placeholder="Insert rating" required>
+                  </div>
+                  <div class="col">
+                    <label for="isActive" class="form-label">Status</label>
+                    <select class="form-select" v-model="isActive" id="isActive" name="isActive" required>
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
                   </div>
               </div>
               <div class="row mb-3">
@@ -265,7 +278,8 @@
                 description: productDescription.value,
                 brand: brand.value,
                 avg_rating: rating.value,
-                category_id: selectedCategory.value
+                category_id: selectedCategory.value,
+                isActive: isActive.value
               });
        
               for (const row of rowData.value) {
@@ -289,7 +303,8 @@
               description: productDescription.value,
               brand: brand.value,
               avg_rating: rating.value,
-              category_id: selectedCategory.value
+              category_id: selectedCategory.value,
+              isActive: isActive.value
             });
             
             cleanValues();
@@ -328,6 +343,7 @@
               brand.value = product.brand;
               rating.value = product.avg_rating;
               selectedCategory.value = product.category_id;
+              isActive.value = product.isActive
 
               if (productDetails.product_market_prices && productDetails.product_market_prices.length > 0) {
                 rowData.value = productDetails.product_market_prices.map(price => ({

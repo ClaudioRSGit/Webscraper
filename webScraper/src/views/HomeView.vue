@@ -1,9 +1,9 @@
 <template>
     <div class="container">
       <Hero />
-        <section class="py-5 bg-gold my-4 border rounded-container">
+        <section class="py-5 bg-red my-4 border rounded-container">
           <div class="container">
-            <h1 class="text-center"> As nossas recomendações</h1>
+            <h1 class="text-center text-white"> As nossas recomendações</h1>
               <div class="d-flex justify-content-center gap-5 mt-4">
                 <div class="category-item">
                   <img src="https://www.worten.pt/i/3d1195e1a358f072b0bf79753da5788fac0e0220">
@@ -36,7 +36,7 @@
             <ProductGrid />
           </div>
           <Services />
-          <section class="py-5 bg-gold mb-4">
+          <section class="py-5 bg-red mb-4">
           <div class="container text-white">
             <div class="row text-center gy-3">
               <div class="col-lg-4">
@@ -95,12 +95,12 @@ svg{
   position: relative;
   bottom: 20px;
 }
-.bg-gold{
-  background-color: rgba(218, 165, 32, 0.9);
+.bg-red{
+  background-color: rgba(218, 32, 32, 0.9);
 }
 .recommended-item {
   position: relative;
-  color: goldenrod;
+  color: red;
   transition: all 0.3s;
 }
 
@@ -112,7 +112,7 @@ svg{
   border-radius: 5%;
   display: inline-block;
   padding: 0.5rem 1rem;
-  background: #dadbdb;
+  background: rgba(255, 0, 0, 0.747);
   text-transform: uppercase;
   letter-spacing: 0.07em;
   position: absolute;
@@ -126,5 +126,8 @@ svg{
 
 .recommended-item:hover img {
   opacity: 0.7;
+}
+.category-item span{
+  color: #fff;
 }
 </style>

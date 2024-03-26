@@ -3,7 +3,7 @@
           <div class="py-5 greyBg">
             <div class="row px-4 px-lg-5 py-lg-4 align-items-center">
               <div class="col-lg-6">
-                <h1 class="h2 text-uppercase mb-0 text-gold fw-bold">Shop</h1>
+                <h1 class="h2 text-uppercase mb-0 text-red fw-bold">Shop</h1>
               </div>
               <div class="col-lg-6 text-lg-end greyBg">
                 <nav aria-label="breadcrumb">
@@ -19,63 +19,81 @@
 
         <div class="col-12 mt-4">
             <div class="row">
-                <div class="col-3">
+                <div class="col-2">
+                    <form @submit="filterProducts" method="GET">
+                        <div class="border-red">
+                            <div class="text-danger">
+                                <strong class="text-uppercase fw-bold">Categorias</strong>
+                                <hr style="fill: red;">
+                            </div>
+                            <div v-for="(category, index) in categories" :key="index">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" :id="'checkbox_' + index" name="category[{{ category.id }}]" :value="category.id">
+                                    <label class="form-check-label" :for="'checkbox_' + index">{{ category.description }}</label>
+                                </div>
+                            </div>
 
-                    <div class="py-2 px-4 bg-gold text-white mb-3"><strong class="small text-uppercase fw-bold">Categories</strong></div>
+                            <div class="mt-4 text-danger">
+                                <strong class="text-uppercase fw-bold">Fabricantes</strong>
+                                <hr style="fill: red;">
+                            </div>
+                            <div v-for="(product, index) in products" :key="index">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" :id="'checkbox_' + index">
+                                    <label class="form-check-label" :for="'checkbox_' + index">{{ product.brand }}</label>
+                                </div>
+                            </div>
 
-                    <ul class="list-unstyled small text-muted ps-lg-4 font-weight-normal">
-                    <li class="mb-2"><a class="reset-anchor" href="#!">Placeholder Category</a></li>
-                    <li class="mb-2"><a class="reset-anchor" href="#!">Placeholder Category</a></li>
-                    <li class="mb-2"><a class="reset-anchor" href="#!">Placeholder Category</a></li>
-                    <li class="mb-2"><a class="reset-anchor" href="#!">Placeholder Category</a></li>
-                    <li class="mb-2"><a class="reset-anchor" href="#!">Placeholder Category</a></li>
-                    <li class="mb-2"><a class="reset-anchor" href="#!">Placeholder Category</a></li>
-                    </ul>
-                    
-                    <div class="py-2 px-4 bg-gold text-white mb-3"><strong class="small text-uppercase fw-bold">Show only</strong></div>
+                            <div class="mt-4 text-danger">
+                                <strong class="text-uppercase fw-bold">Avaliações</strong>
+                                <hr style="fill: red;">
+                            </div>
 
-                    <div class="form-check mb-1">
-                        <input class="form-check-input" type="checkbox" id="checkbox_1">
-                        <label class="form-check-label" for="checkbox_1">Placeholder Filter</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="bestRated" name="bestRated">
+                                <label class="form-check-label" for="bestRated">Melhores Avaliados</label>
+                            </div>
+
+                            <div class="text-danger mt-3">
+                                <strong class="text-uppercase fw-bold">Preço</strong>
+                                <hr style="fill: red;">
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <div class="mb-3">
+                                    <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="De">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="A">
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="priceDescending" name="priceDescending">
+                                <label class="form-check-label" for="priceDescending">Preço DEC</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="priceAscending" name="priceAscending">
+                                <label class="form-check-label" for="priceAscending">Preço ASC</label>
+                            </div>
+                                
+                            <button type="submit" class="btn btn-danger w-100 mt-2">Aplicar Filtro</button>
                         </div>
-                        <div class="form-check mb-1">
-                        <input class="form-check-input" type="checkbox" id="checkbox_2">
-                        <label class="form-check-label" for="checkbox_2">Placeholder Filter</label>
-                    </div>
-                    <div class="py-2 px-4 bg-gold text-white mb-3"><strong class="small text-uppercase fw-bold">Show only</strong></div>
-                    <div class="form-check mb-1">
-                        <input class="form-check-input" type="checkbox" id="checkbox_1">
-                        <label class="form-check-label" for="checkbox_1">Placeholder Filter</label>
-                        </div>
-                        <div class="form-check mb-1">
-                        <input class="form-check-input" type="checkbox" id="checkbox_2">
-                        <label class="form-check-label" for="checkbox_2">Placeholder Filter</label>
-                    </div>
-                    <div class="py-2 px-4 bg-gold text-white mb-3"><strong class="small text-uppercase fw-bold">Show only</strong></div>
-                    <div class="form-check mb-1">
-                        <input class="form-check-input" type="checkbox" id="checkbox_1">
-                        <label class="form-check-label" for="checkbox_1">Placeholder Filter</label>
-                        </div>
-                        <div class="form-check mb-1">
-                        <input class="form-check-input" type="checkbox" id="checkbox_2">
-                        <label class="form-check-label" for="checkbox_2">Placeholder Filter</label>
-                    </div>
+                    </form>
                 </div>
-                <div class="col-9">
+                <div class="col-10">
                     <div class="col-lg-9 order-1 order-lg-2 mb-5 w-100">
                         <div class="row mb-3 align-items-center d-flex justify-content-between">
                             <div class="col-lg-6 mb-2 mb-lg-0">
-                                <p class="text-sm text-muted mb-0">Showing 1–12 of 53 results</p>
+                                <p class="text-sm mb-0"> <b class="text-danger">{{ products.length }}</b> &nbsp;Produtos Encontrados</p>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 d-flex justify-content-end gap-2">
                                 <ul class="list-inline d-flex align-items-center justify-content-lg-end mb-0">
                                 <li class="list-inline-item">
+                                    <span>Produtos:</span>
                                     <select class="selectpicker" data-customclass="form-control form-control-sm">
-                                    <option value>Sort By </option>
-                                    <option value="default">Default sorting </option>
-                                    <option value="popularity">Popularity </option>
-                                    <option value="low-high">Price: Low to High </option>
-                                    <option value="high-low">Price: High to Low </option>
+                                    <option value="default">10</option>
+                                    <option value="default">15</option>
+                                    <option>20 </option>
                                     </select>
                                 </li>
                                 </ul>
@@ -84,7 +102,7 @@
                     </div>
                     <div class="row">
                         <div class="col-4" v-for="(product, index) in products" :key="index">
-                        <Product :product="product" />
+                                <Product :product="product" />
                         </div>
                     </div>
                 </div>
@@ -96,7 +114,7 @@
 <script>
 import Product from '../components/Product.vue'
 import { ref, onMounted } from 'vue';
-import { getProducts } from '@/services/http';
+import { getProducts, getCategories } from '@/services/http';
 export default{
     name: 'ProductsView',
     components: {
@@ -104,18 +122,57 @@ export default{
     },
     setup() {
         const products = ref([]);
+        const categories = ref([]);
+
+        const filterProducts = async (event) => {
+            event.preventDefault();
+
+            try {
+                const formData = {
+                    category: Array.from(event.target.querySelectorAll('input[name^="category"]:checked')).map(input => input.value),
+                    bestRated: event.target.querySelector('input[name="bestRated"]').checked,
+                    priceFrom: event.target.querySelector('input[name="priceFrom"]').value,
+                    priceTo: event.target.querySelector('input[name="priceTo"]').value,
+                    priceDescending: event.target.querySelector('input[name="priceDescending"]').checked,
+                    priceAscending: event.target.querySelector('input[name="priceAscending"]').checked,
+                };
+
+                const params = new URLSearchParams(formData).toString();
+
+                const response = await fetch('/products', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+                    products.value = responseData.products;
+                } else {
+                    console.error('Erro ao obter os produtos filtrados');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
 
         onMounted(async () => {
         try {
             const data = await getProducts();
-            products.value = data;
+            products.value = data.filter(product => product.isActive === 1);
+
+            const categoryData = await getCategories();
+            categories.value = categoryData;
         } catch (error) {
             console.error(error);
         }
         });
         return { 
             products,
-            Product
+            Product,
+            categories,
+            filterProducts
         };
     }
 }
@@ -124,14 +181,22 @@ export default{
 </script>
 
 <style>
+.form-check-input[type="checkbox"] {
+    border: 1px solid red;
+    cursor: pointer;
+    background-color: white;
+}
+.form-check-input[type="checkbox"]:checked {
+    background-color: red;
+}
 .greyBg {
   background-color: rgb(244, 245, 249);
 }
-.text-gold {
-  color: goldenrod;
+.text-red, option {
+  color: red;
 }
-.bg-gold{
-    background-color: rgba(218, 165, 32, 0.733);
+.bg-red{
+    background-color: rgba(218, 32, 32, 1);
 }
 .searchbar{
     max-height: 20px!important;

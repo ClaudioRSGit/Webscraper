@@ -76,7 +76,8 @@
           description: product.description,
           brand: product.brand,
           avg_rating: 0,
-          category_id: 1
+          category_id: 1,
+          isActive: 0
         };
         
         await createProduct(acceptedProduct);

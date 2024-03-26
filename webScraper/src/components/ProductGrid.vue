@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h1></h1>
   <div v-if="products.length > 0">
     <div class="d-flex container px-5 gap-2">
     <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -21,7 +22,7 @@
                 </div>
               </div>
               <h6> <a class="reset-anchor">{{ products[0].title }}</a></h6>
-              <p class="small text-muted">{{ products[0].product_market_prices[0].price }} {{ products[0].product_market_prices[0].currency }}</p>
+              <p class="small text-danger fw-bold">{{ products[0].product_market_prices[0].price }} {{ products[0].product_market_prices[0].currency }}</p>
             </div>
           </div>
           <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -43,7 +44,7 @@
                   </div>
         </div>
         <h6> <a class="reset-anchor">{{ products[1].title }}</a></h6>
-        <p class="small text-muted">{{ products[1].product_market_prices[0].price }} {{ products[1].product_market_prices[0].currency }}</p>
+        <p class="small text-danger fw-bold">{{ products[1].product_market_prices[0].price }} {{ products[1].product_market_prices[0].currency }}</p>
       </div>
     </div>
     <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -65,7 +66,7 @@
             </div>
         </div>
         <h6> <a class="reset-anchor">{{ products[2].title }}</a></h6>
-        <p class="small text-muted">{{ products[2].product_market_prices[0].price }} {{ products[2].product_market_prices[0].currency }}</p>
+        <p class="small text-danger fw-bold">{{ products[2].product_market_prices[0].price }} {{ products[2].product_market_prices[0].currency }}</p>
       </div>
     </div>
     <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -87,7 +88,7 @@
           </div>
         </div>
         <h6> <a class="reset-anchor">{{ products[3].title }}</a></h6>
-        <p class="small text-muted">{{ products[3].product_market_prices[0].price }} {{ products[3].product_market_prices[0].currency }}</p>
+        <p class="small text-danger fw-bold">{{ products[3].product_market_prices[0].price }} {{ products[3].product_market_prices[0].currency }}</p>
       </div>
     </div>
   </div>
@@ -108,15 +109,15 @@ export default {
     const products = ref([]);
     
     async function fetchProducts() {
-    try {
-      const allProducts = await getProducts();
-      const shuffledProducts = shuffle(allProducts);
-      products.value = shuffledProducts.slice(0, 4);
-      
-    } catch (error) {
-      console.error(error);
+      try {
+        const allProducts = await getProducts();
+        const shuffledProducts = shuffle(allProducts).filter(product => product.isActive === 1);
+        products.value = shuffledProducts.slice(0, 4);
+        
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
 
     function shuffle(array) {
       let currentIndex = array.length,
@@ -154,5 +155,8 @@ img{
   transition: 0.4s;
   cursor: pointer;
 }
-
+a{
+  text-decoration: none;
+  color: black;
+}
 </style>

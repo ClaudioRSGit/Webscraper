@@ -43,7 +43,7 @@
       <nav class="navbar navbar-expand-lg py-3 px-lg-0 d-flex justify-content-between">
         <div>
           <span class="navbar-brand">
-          <router-link class="fw-bold text-uppercase text-gold" :to="{ name: 'home' }">E Scraper</router-link>
+          <router-link class="fw-bold text-uppercase text-red" :to="{ name: 'home' }">E Scraper</router-link>
         </span>
         </div>
         <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,13 +60,13 @@
           <div class="searchbar-container">
             <input class="searchbar-input" type="text" v-model="searchQuery" placeholder="Procurar Produtos" aria-label="Search" aria-describedby="button-addon2" @input="getResults">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 20px;">
-              <path fill="goldenrod" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+              <path fill="red" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
             </svg>
             <div class="searchResults overflowY" v-if="showsearchResults">
               <div class="p-4 btn" v-if="results.length === 0" @click="openModal">
                   Nenhum produto encontrado. Solicite um novo produto!
               </div>
-                <div class="p-4 " v-for="(result, index) in results" :key="result.id" @click="selectItem(result.id, result.title)">
+                <div class="p-4 productsFound " v-for="(result, index) in results" :key="result.id" @click="selectItem(result.id, result.title)">
                   <a :href="`/product/${result.id}`">
                     <div class="showProduct">
                       <img :src="result.image[0].link">
@@ -90,12 +90,12 @@
 
           <ul class="navbar-nav ms-auto">               
             <li class="nav-item" v-if="auth.isAuth">
-              <router-link class="nav-link text-gold" :to="{ name: 'administration' }">Administração</router-link>
+              <router-link class="nav-link text-red" :to="{ name: 'administration' }">Administração</router-link>
             </li>
             <li class="nav-item" v-if="auth.isAuth">
               <i class="far fa-heart me-3"></i>
-              <i class="fas fa-user me-3 text-gold text-gray fw-normal"></i>
-              <button class="btn btn-outline-secondary" @click="logout">Sair</button>
+              <i class="fas fa-user me-3 text-red text-gray fw-normal"></i>
+              <button class="btn btn-outline-danger" @click="logout">Sair</button>
             </li>
             <li v-else>
               <router-link class="btn btn-outline-secondary" :to="{ name: 'login' }">Login</router-link>
@@ -219,13 +219,13 @@ export default {
 </script>
 
 <style scoped>
-.text-gold {
-  color: goldenrod;
+.text-red {
+  color: red;
 }
 .searchbar-input {
   width: 90%;
   padding: 1%;
-  border: 1px solid goldenrod;
+  border: 1px solid red;
   border-radius: 15px;
 }
 .searchbar-container {
@@ -277,5 +277,8 @@ a{
 }
 .overflowY::-webkit-scrollbar {
   width: 5px;
+}
+.productsFound:hover{
+  background-color: rgba(255, 0, 0, 0.1);
 }
 </style>

@@ -106,7 +106,7 @@ img{
 }
 .category-item {
   position: relative;
-  color: goldenrod;
+  color: red;
   transition: all 0.3s;
 }
 

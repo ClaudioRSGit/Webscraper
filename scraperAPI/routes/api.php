@@ -8,6 +8,7 @@ use App\Http\Controllers\Product;
 use App\Http\Controllers\Role;
 use App\Http\Controllers\Category;
 use App\Http\Controllers\Market;
+use App\Http\Controllers\FiltersController;
 
 Route::post('/auth',[Auth::class,'auth']);
 Route::get('/auth/logout',[Auth::class,'logout']);
@@ -17,13 +18,16 @@ Route::post('/register', [Auth::class, 'register']);
 Route::get('/scrape', 'ScrapingController@scrape');
 
 //queries
-// Route::get('/products/{query}', 'ProductController@searchProduct');
 Route::get('/products/search/{query}', 'ProductController@searchByTitle');
+
+//filters
+// Route::get('/filter-products', 'FiltersController@index');
+//Route::get('/products', 'FiltersController@index');
+Route::get('/products', 'ProductController@index');
 
 //get routes
 Route::get('/users', 'UserController@index');
 Route::get('/user/{id}', 'UserController@getUserById');
-Route::get('/products', 'ProductController@index');
 Route::get('/product/{id}', 'ProductController@getProductById');
 Route::get('/images', 'ImageController@index');
 Route::get('/roles', 'RoleController@index');

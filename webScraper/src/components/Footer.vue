@@ -49,5 +49,7 @@ export default{
 </script>
 
 <style scoped>
-
+.footer-link{
+  color: red;
+}
 </style>

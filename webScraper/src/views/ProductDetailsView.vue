@@ -102,8 +102,8 @@
                 <div class="d-flex justify-content-between bg-white my-3 align-items-center p-3" v-for="(marketPrice, index) in product.product_market_prices" :key="index">
                     <img v-if="marketPrice.market && marketPrice.market.logo" :src="marketPrice.market.logo" class="market-logo" alt="Market Logo">
                     <span class="text-sm mb-1" v-if="product && product.title">{{ product.title }}</span>
-                  <span class="text-golden fw-bold mb-0" v-if="marketPrice.price">{{ marketPrice.price }} {{ marketPrice.currency }}</span>
-                  <a :href="marketPrice.link" class="btn bg-golden text-white ml-auto" target="_blank">Ver Produto</a>
+                  <span class="text-reden fw-bold mb-0" v-if="marketPrice.price">{{ marketPrice.price }} {{ marketPrice.currency }}</span>
+                  <a :href="marketPrice.link" class="btn bg-reden text-white ml-auto" target="_blank">Ver Produto</a>
               </div>
               </div>
             </div>
@@ -256,16 +256,16 @@ img{
   width: 100px;
   height: 50px;
 }
-.bg-golden{
-  background-color: goldenrod;
+.bg-reden{
+  background-color: red;
 }
-.text-golden, .nav-link{
-  color: goldenrod;
+.text-reden, .nav-link{
+  color: red;
 }
 .tag{
     border: 1px solid #000;
     padding: 5px;
-    background-color: goldenrod;
+    background-color: red;
     color: #FFF;
 }
 .product img {
