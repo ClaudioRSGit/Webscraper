@@ -22,8 +22,8 @@ Route::get('/products/search/{query}', 'ProductController@searchByTitle');
 
 //filters
 // Route::get('/filter-products', 'FiltersController@index');
-//Route::get('/products', 'FiltersController@index');
-Route::get('/products', 'ProductController@index');
+Route::get('/products', 'FiltersController@index');
+//Route::get('/products', 'ProductController@index');
 
 //get routes
 Route::get('/users', 'UserController@index');

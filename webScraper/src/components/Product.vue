@@ -9,7 +9,8 @@
             </a>
       </div>
       <h6>{{ product.title }}</h6>
-      <p class="small text-danger fw-bold">{{ product.product_market_prices[0].price }} {{ product.product_market_prices[0].currency }}</p>
+      <!-- <p class="small text-danger fw-bold">{{ product.product_market_prices[0].price }} {{ product.product_market_prices[0].currency }}</p> -->
+      <p class="small text-danger fw-bold">{{ product.lowestPrice }} {{ product.product_market_prices[0].currency }}</p>
     </div>
 </template>
 

@@ -17,10 +17,10 @@
           </div>
         
 
-        <div class="col-12 mt-4">
+        <div class="col-12 mt-4 mb-4">
             <div class="row">
                 <div class="col-2">
-                    <form @submit="filterProducts" method="GET">
+                    <form @submit.prevent="filterProducts" method="GET">
                         <div class="border-red">
                             <div class="text-danger">
                                 <strong class="text-uppercase fw-bold">Categorias</strong>
@@ -37,10 +37,11 @@
                                 <strong class="text-uppercase fw-bold">Fabricantes</strong>
                                 <hr style="fill: red;">
                             </div>
-                            <div v-for="(product, index) in products" :key="index">
+
+                            <div v-for="(brand, index) in brands" :key="index">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" :id="'checkbox_' + index">
-                                    <label class="form-check-label" :for="'checkbox_' + index">{{ product.brand }}</label>
+                                    <input class="form-check-input" type="checkbox" :id="'checkbox_' + index" :name="'brand[' + brand + ']'" :value="brand">
+                                    <label class="form-check-label" :for="'checkbox_' + index">{{ brand }}</label>
                                 </div>
                             </div>
 
@@ -53,8 +54,8 @@
                                 <input class="form-check-input" type="checkbox" id="bestRated" name="bestRated">
                                 <label class="form-check-label" for="bestRated">Melhores Avaliados</label>
                             </div>
-
-                            <div class="text-danger mt-3">
+                            
+                            <!-- <div class="text-danger mt-3">
                                 <strong class="text-uppercase fw-bold">Preço</strong>
                                 <hr style="fill: red;">
                             </div>
@@ -66,14 +67,28 @@
                                 <div class="mb-3">
                                     <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="A">
                                 </div>
+                            </div> -->
+
+                            <div class="text-danger mt-3">
+                                <strong class="text-uppercase fw-bold">Ordenar por</strong>
+                                <hr style="fill: red;">
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="priceDescending" name="priceDescending">
+                            <!-- <div class="form-check">
+                                <input class="form-check-input" type="radio" id="priceDescending" name="priceFilter" value="priceDescending">
                                 <label class="form-check-label" for="priceDescending">Preço DEC</label>
                             </div>
+
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="priceAscending" name="priceAscending">
+                                <input class="form-check-input" type="radio" id="priceAscending" name="priceFilter" value="priceAscending">
                                 <label class="form-check-label" for="priceAscending">Preço ASC</label>
+                            </div> -->
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="titleAscending" name="titleFilter" value="titleAscending">
+                                <label class="form-check-label" for="titleAscending">Nome ASC</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="titleDescending" name="titleFilter" value="titleDescending">
+                                <label class="form-check-label" for="titleDescending">Nome DEC</label>
                             </div>
                                 
                             <button type="submit" class="btn btn-danger w-100 mt-2">Aplicar Filtro</button>
@@ -84,16 +99,16 @@
                     <div class="col-lg-9 order-1 order-lg-2 mb-5 w-100">
                         <div class="row mb-3 align-items-center d-flex justify-content-between">
                             <div class="col-lg-6 mb-2 mb-lg-0">
-                                <p class="text-sm mb-0"> <b class="text-danger">{{ products.length }}</b> &nbsp;Produtos Encontrados</p>
+                                <p class="text-sm mb-0"> <b class="text-danger">{{ products.length }} {{ products.length  > 1 ? 'Produtos Encontrados' : 'Produto Encontrado'}}</b></p>
                             </div>
                             <div class="col-lg-6 d-flex justify-content-end gap-2">
                                 <ul class="list-inline d-flex align-items-center justify-content-lg-end mb-0">
                                 <li class="list-inline-item">
                                     <span>Produtos:</span>
                                     <select class="selectpicker" data-customclass="form-control form-control-sm">
-                                    <option value="default">10</option>
-                                    <option value="default">15</option>
-                                    <option>20 </option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20 </option>
                                     </select>
                                 </li>
                                 </ul>
@@ -115,6 +130,8 @@
 import Product from '../components/Product.vue'
 import { ref, onMounted } from 'vue';
 import { getProducts, getCategories } from '@/services/http';
+import axiosInstance from '@/services/http';
+
 export default{
     name: 'ProductsView',
     components: {
@@ -123,35 +140,24 @@ export default{
     setup() {
         const products = ref([]);
         const categories = ref([]);
-
+        const brands = ref([]);
+        
         const filterProducts = async (event) => {
-            event.preventDefault();
+
+            const form = new FormData(event.target);
+            const data = {};
+            
+            for (let key of form.keys()) {
+                data[key] = form.getAll(key);
+            }
+
+            console.log(data);
 
             try {
-                const formData = {
-                    category: Array.from(event.target.querySelectorAll('input[name^="category"]:checked')).map(input => input.value),
-                    bestRated: event.target.querySelector('input[name="bestRated"]').checked,
-                    priceFrom: event.target.querySelector('input[name="priceFrom"]').value,
-                    priceTo: event.target.querySelector('input[name="priceTo"]').value,
-                    priceDescending: event.target.querySelector('input[name="priceDescending"]').checked,
-                    priceAscending: event.target.querySelector('input[name="priceAscending"]').checked,
-                };
-
-                const params = new URLSearchParams(formData).toString();
-
-                const response = await fetch('/products', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                const response = await axiosInstance.get('/products', {
+                    params: data
                 });
-
-                if (response.ok) {
-                    const responseData = await response.json();
-                    products.value = responseData.products;
-                } else {
-                    console.error('Erro ao obter os produtos filtrados');
-                }
+                products.value = response.data;
             } catch (error) {
                 console.error(error);
             }
@@ -162,17 +168,26 @@ export default{
             const data = await getProducts();
             products.value = data.filter(product => product.isActive === 1);
 
-            const categoryData = await getCategories();
+            let categoryData;
+            if (localStorage.getItem('categories')) {
+                categoryData = JSON.parse(localStorage.getItem('categories'));
+            } else {
+                categoryData = await getCategories();
+                localStorage.setItem('categories', JSON.stringify(categoryData));
+            }
             categories.value = categoryData;
+
+            brands.value = data.map(product => product.brand);
         } catch (error) {
             console.error(error);
         }
         });
-        return { 
+        return {
             products,
             Product,
             categories,
-            filterProducts
+            filterProducts,
+            brands
         };
     }
 }

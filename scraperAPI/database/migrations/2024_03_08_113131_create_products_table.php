@@ -15,6 +15,7 @@ class CreateProductsTable extends Migration
             $table->boolean('isActive')->nulable()->default(true);
             $table->string('brand')->nullable();
             $table->float('avg_rating')->nullable();
+            // $table->string('lowestPrice')->nullable();
             $table->foreignId('category_id')->constrained();
             $table->timestamps();
             $table->softDeletes();
