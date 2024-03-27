@@ -42,24 +42,33 @@ class FiltersController extends Controller
             }
         }
 
-        // if ($request->has('priceFilter')) {
-        //     $priceFilter = $request->input('priceFilter')[0];
-        //     $direction = $priceFilter === 'priceAscending' ? 'asc' : 'desc';
-        //     $query->orderBy('lowestPrice', $direction);
-        // }
+        if ($request->has('priceFilter')) {
+            if($request->input('priceFilter')[0] !== null) {
+                $priceFilter = $request->input('priceFilter')[0];
+                $direction = $priceFilter === 'priceAscending' ? 'asc' : 'desc';
+                $query->orderBy('lowestPrice', $direction);
+            }
+        }
     
-        // if ($request->has('priceFrom')) {
-        //     $priceFrom = (float) $request->input('priceFrom')[0];
-        //     $query->where('lowestPrice', '>=', $priceFrom);
-        // }
+        if ($request->has('priceFrom')) {
+            if($request->input('priceFrom')[0] !== null) {
+                $priceFrom = (float) $request->input('priceFrom')[0];
+                $query->where('lowestPrice', '>=', $priceFrom);
+            }
+        }
         
-        // if ($request->has('priceTo')) {
-        //     $priceTo = (float) $request->input('priceTo')[0];
-        //     $query->where('lowestPrice', '<=', $priceTo);
-        // }
+        if ($request->has('priceTo')) {
+            if($request->input('priceTo')[0] !== null) {
+                $priceTo = (float) $request->input('priceTo')[0];
+                $query->where('lowestPrice', '<=', $priceTo);
+            }
+        }
         
         if ($request->has('bestRated')) {
-            $query->orderBy('avg_rating', 'desc');
+            if($request->input('bestRated') !== null) {
+                $bestRated = $request->input('bestRated')[0];
+                $query->orderBy('avg_rating', 'desc');
+            }
         }
     
             
