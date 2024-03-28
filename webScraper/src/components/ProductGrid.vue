@@ -12,12 +12,8 @@
                 <img :src="products[0].image[0].link" alt="" class="img-fluid card-image shadow-1-strong rounded bg-white">
               </a>
                 <div class="product-overlay">
-                  <ul class="mb-0 list-inline d-flex justify-content-around">
-                    <li class="list-inline-item m-0 p-0">
-                    </li>
-                    
-                    <li class="list-inline-item me-0">
-                    </li>
+                  <ul class="mb-0 list-inline d-flex gap-2">
+                    <li class="list-inline-item m-0 p-0"><i class="far fa-heart"></i></li>
                   </ul>
                 </div>
               </div>
@@ -28,23 +24,16 @@
           <div class="col-xl-3 col-lg-4 col-sm-6">
             <div class="product text-center">
               <div class="position-relative mb-3">
-                <div class="badge text-white bg-">
+                <div class="badge text-white bg-"></div>
+                <a class="d-block"><img :src="products[1].image[0].link" alt="" class="img-fluid card-image shadow-1-strong rounded bg-white"></a>
+                <div class="product-overlay">
+                  <ul class="mb-0 list-inline d-flex gap-2">
+                    <li class="list-inline-item m-0 p-0"><i class="far fa-heart"></i></li>
+                  </ul>
                 </div>
-                <a class="d-block">
-                  <img :src="products[1].image[0].link" alt="" class="img-fluid card-image shadow-1-strong rounded bg-white">
-                </a>
-                  <div class="product-overlay">
-                    <ul class="mb-0 list-inline d-flex justify-content-around">
-                      <li class="list-inline-item m-0 p-0">
-                      </li>
-                      
-                      <li class="list-inline-item me-0">
-                      </li>
-                    </ul>
-                  </div>
-        </div>
-        <h6> <a class="reset-anchor">{{ products[1].title }}</a></h6>
-        <p class="small text-danger fw-bold">{{ products[1].product_market_prices[0].price }} {{ products[1].product_market_prices[0].currency }}</p>
+              </div>
+            <h6> <a class="reset-anchor">{{ products[1].title }}</a></h6>
+            <p class="small text-danger fw-bold">{{ products[1].product_market_prices[0].price }} {{ products[1].product_market_prices[0].currency }}</p>
       </div>
     </div>
     <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -55,15 +44,11 @@
           <a class="d-block">
             <img :src="products[2].image[0].link" alt="" class="img-fluid card-image shadow-1-strong rounded bg-white">
           </a>
-            <div class="product-overlay">
-              <ul class="mb-0 list-inline d-flex justify-content-around">
-                <li class="list-inline-item m-0 p-0">
-                </li>
-                
-                <li class="list-inline-item me-0">
-                </li>
-              </ul>
-            </div>
+                <div class="product-overlay">
+                  <ul class="mb-0 list-inline d-flex gap-2">
+                    <li class="list-inline-item m-0 p-0"><i class="far fa-heart"></i></li>
+                  </ul>
+                </div>
         </div>
         <h6> <a class="reset-anchor">{{ products[2].title }}</a></h6>
         <p class="small text-danger fw-bold">{{ products[2].product_market_prices[0].price }} {{ products[2].product_market_prices[0].currency }}</p>
@@ -77,15 +62,11 @@
           <a class="d-block">
             <img :src="products[3].image[0].link" alt="" class="img-fluid card-image shadow-1-strong rounded bg-white">
           </a>
-            <div class="product-overlay">
-              <ul class="mb-0 list-inline d-flex justify-content-around">
-                <li class="list-inline-item m-0 p-0">
-                </li>
-                
-                <li class="list-inline-item me-0">
-                </li>
-            </ul>
-          </div>
+          <div class="product-overlay">
+                  <ul class="mb-0 list-inline d-flex gap-2">
+                    <li class="list-inline-item m-0 p-0"><i class="far fa-heart"></i></li>
+                  </ul>
+                </div>
         </div>
         <h6> <a class="reset-anchor">{{ products[3].title }}</a></h6>
         <p class="small text-danger fw-bold">{{ products[3].product_market_prices[0].price }} {{ products[3].product_market_prices[0].currency }}</p>
@@ -158,5 +139,81 @@ img{
 a{
   text-decoration: none;
   color: black;
+}
+i{
+  color: red;
+  cursor: pointer;
+}
+img{
+  object-fit:contain;  
+  transition: 0.4s;
+  cursor: pointer;
+}
+.market-logo{
+  width: 100px;
+  height: 50px;
+}
+.bg-reden{
+  background-color: red;
+}
+.text-reden, .nav-link{
+  color: red;
+}
+.tag{
+    border: 1px solid #000;
+    padding: 5px;
+    background-color: red;
+    color: #FFF;
+}
+.product img {
+  filter: grayscale(40%);
+  transition: all 0.3s;
+}
+
+.product-overlay {
+  width: 100%;
+  position: absolute;
+  left: 100px;
+  top: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1rem 0;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.product-overlay ul li {
+  transition: all 0.3s;
+}
+
+.product-overlay ul li:first-of-type {
+  transform: translateX(-10px);
+  opacity: 0;
+}
+
+.product-overlay ul li:last-of-type {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.product:hover img {
+  opacity: 0.7;
+}
+
+.product:hover .product-overlay {
+  opacity: 1;
+}
+
+.product:hover .product-overlay li {
+  opacity: 1;
+  transform: none;
+}
+
+.product .badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
 }
 </style>

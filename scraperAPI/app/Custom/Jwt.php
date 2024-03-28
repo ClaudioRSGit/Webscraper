@@ -24,7 +24,7 @@ class Jwt{
     public static function create(User $data){
         $key = env('JWT_KEY');
         $payload = [
-            'exp' => time() + 180000000,
+            'exp' => time() + 86400,
             'iat' => time(),
             'role_id' => $data->role_id,
             'data' => $data

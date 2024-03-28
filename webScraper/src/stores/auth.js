@@ -6,7 +6,7 @@ import router from '../router'
 export const useAuth = defineStore('auth', () => {
     const user = ref({});
     const isAuth = ref(false);
-    
+
     function setUser(userValue){
         user.value = userValue;
     }
@@ -51,12 +51,6 @@ export const useAuth = defineStore('auth', () => {
             router.push({name: 'login'});
         }
     }
-
-    function logout () {
-        isAuth.value = false;
-        clear();
-        router.push({name:'login'});
-      }
 
     return {
         user,

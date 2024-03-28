@@ -3,7 +3,7 @@
       <div class="container">
         <div class="row gx-lg-5 align-items-center">
           <div class="col-lg-6 mb-5 mb-lg-0">
-            <h1 class="my-5 display-3 fw-bold ls-tight text-primary">
+            <h1 class="my-5 display-3 fw-bold ls-tight text-danger">
               Eletronics Scraper <br />
             </h1>
             <h2>Crie a sua conta de forma 100% gratuita!</h2>
@@ -36,12 +36,12 @@
                     <input type="password" v-model="confirmPassword" class="form-control" />
                   </div>
                   <div class="d-flex w-100 gap-2"> 
-                  <button type="submit" class="btn btn-secondary btn-block w-100">
+                  <button type="submit" class="btn btn-danger btn-block w-100">
                     Criar conta
                   </button>
                   </div>             
                 </form>
-                <p class="text-center mt-3">Já é cliente? <a href="/login">Login</a></p>
+                <p class="text-center mt-3">Já é cliente? <a class="text-danger fw-bold"ref="/login">Login</a></p>
             </div>
             </div>
           </div>

@@ -26,6 +26,20 @@ export const loginUser = async (userData) => {
       console.error(error);
   }
 };
+export const getAuthenticatedUser = async () => {
+  try {
+    const response = await axiosInstance.get('/auth/verify');
+    const authenticatedUser = response.data.user;
+
+    const userDetailsResponse = await axiosInstance.get(`/user/${authenticatedUser.role_id}`);
+    const userDetails = userDetailsResponse.data;
+
+    return userDetails;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 //get functions
 export const getCategories = async () => {
     try {

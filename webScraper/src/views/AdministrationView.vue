@@ -9,7 +9,6 @@
             </li>
           </ul>
     </div>
-    <router-view></router-view>
  
     <div class="container">
       <div class="row">
@@ -144,7 +143,6 @@ const router = useRouter();
 
 function logout() {
     auth.logout();
-    router.push({name:'login'});
 }
 
 function showTable(table) {

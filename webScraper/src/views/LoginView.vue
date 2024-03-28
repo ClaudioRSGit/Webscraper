@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row gx-lg-5 align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <h1 class="my-5 display-3 fw-bold ls-tight text-primary">
+          <h1 class="my-5 display-3 fw-bold ls-tight text-danger">
             Eletronics Scraper <br />
           </h1>
           <p style="color: hsl(217, 10%, 50.8%)">
@@ -27,12 +27,12 @@
                   <input type="password" v-model="user.password" class="form-control" />
                 </div>
                 <div class="d-flex w-100 gap-2">
-                  <button type="submit" class="btn btn-primary btn-block w-100">
+                  <button type="submit" class="btn btn-danger btn-block w-100">
                   Iniciar Sessão
                 </button>   
                 </div>             
               </form>
-              <p class="text-center mt-3">Ainda não é cliente? <router-link class="nav-link" :to="{ name: 'register' }">Crie uma conta</router-link></p>
+              <p class="text-center mt-3">Ainda não é cliente? <router-link class="nav-link fw-bold text-danger" :to="{ name: 'register' }">Crie uma conta</router-link></p>
             </div>
           </div>
         </div>
@@ -61,11 +61,14 @@ async function Login() {
       token, 
       user: userData
     } = await loginUser(user);
-    
-    // auth.setToken(token);
     auth.setUser(userData);
     auth.setIsAuth(true);
-    router.push({name:'home'});
+
+    if (userData.role_id === 1) {
+      router.push({name:'administration'});
+    }else{
+      router.push({name:'home'});
+    }
   } catch (error) {
     console.log(error?.response?.data);
   }
