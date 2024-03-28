@@ -116,6 +116,27 @@ export const getPriceHistoryById = async (id) => {
     throw error;
   }
 }
+export const getAllProductLists = async () => {
+  try {
+    const response = await axiosInstance.get('/productLists');
+    return response.data;
+    console.table(response.data);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getAllFavoriteLists = async () => {
+  try {
+    const response = await axiosInstance.get('/favoriteLists');
+    return response.data;
+    console.table(response.data);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 //post functions
 export const createCategory = async (newCategory) => {
     try {
@@ -179,6 +200,15 @@ export const createProductMarketPrice = async (newProductMarketPrice) => {
 export const createPendingProduct = async (newPendingProduct) => {
   try {
     const response = await axiosInstance.post('/createPendingProduct', newPendingProduct);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export const createFavoriteList = async (newFavoriteList) => {
+  try {
+    const response = await axiosInstance.post('/createFavoriteList', newFavoriteList);
     return response.data;
   } catch (error) {
     console.error(error);

@@ -9,36 +9,17 @@ class FavoriteListController extends Controller
 {
     public function index()
     {
-        //
-    }
-
-    public function create()
-    {
-        //
+        $favoriteLists = FavoriteList::with('products.product')->get();
+        return response()->json($favoriteLists);
     }
 
     public function store(Request $request)
     {
-        //
-    }
-
-    public function show(FavoriteList $favoriteList)
-    {
-        //
-    }
-
-    public function edit(FavoriteList $favoriteList)
-    {
-        //
-    }
-
-    public function update(Request $request, FavoriteList $favoriteList)
-    {
-        //
-    }
-
-    public function destroy(FavoriteList $favoriteList)
-    {
-        //
+        $favoriteList = new FavoriteList();
+        $favoriteList->name = $request->name;
+        $favoriteList->user_id = $request->user_id;
+        $favoriteList->save();
+        
+        return response()->json($favoriteList);
     }
 }

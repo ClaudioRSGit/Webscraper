@@ -7,79 +7,19 @@ use Illuminate\Http\Request;
 
 class ProductListController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $productLists = ProductList::with('product')->get();
+        return response()->json($productLists);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\ProductList  $productList
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ProductList $productList)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\ProductList  $productList
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ProductList $productList)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ProductList  $productList
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ProductList $productList)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\ProductList  $productList
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProductList $productList)
-    {
-        //
+        $productList = new ProductList();
+        $productList->name = $request->name;
+        $productList->user_id = $request->user_id;
+        $productList->save();
+        
+        return response()->json($productList);
     }
 }

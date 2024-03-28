@@ -36,6 +36,8 @@ Route::get('/markets', 'MarketController@index');
 Route::get('/pendingProducts', 'PendingProductController@index');
 Route::get('/productMarketPrices', 'ProductMarketPriceController@index');
 Route::get('/priceHistoryById/{id}', 'PriceHistoryController@priceHistoryById');
+Route::get('/favoriteLists', 'FavoriteListController@index');
+Route::get('/productList', 'ProductListController@index');
 
 //post routes
 Route::post('/createCategory', 'CategoryController@store');
@@ -45,6 +47,8 @@ Route::post('/createMarket', 'MarketController@store');
 Route::post('/createProduct', 'ProductController@store');
 Route::post('/productMarketPrices', 'ProductMarketPriceController@store');
 Route::post('/createPendingProduct', 'PendingProductController@store');
+Route::post('/createFavoriteList', 'FavoriteListController@store');
+Route::post('/createProductList', 'ProductListController@store');
 
 //destroy routes
 Route::delete('/destroyUser/{id}', 'UserController@destroy');
