@@ -32,14 +32,14 @@ export const getAuthenticatedUser = async () => {
     const authenticatedUser = response.data.user;
 
     const userDetailsResponse = await axiosInstance.get(`/user/${authenticatedUser.role_id}`);
-    const userDetails = userDetailsResponse.data;
 
-    return userDetails;
+    return userDetailsResponse.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 };
+
 //get functions
 export const getCategories = async () => {
     try {
@@ -116,27 +116,16 @@ export const getPriceHistoryById = async (id) => {
     throw error;
   }
 }
-export const getAllProductLists = async () => {
-  try {
-    const response = await axiosInstance.get('/productLists');
-    return response.data;
-    console.table(response.data);
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
 
-export const getAllFavoriteLists = async () => {
+export const getuserWishLists = async (id) => {
   try {
-    const response = await axiosInstance.get('/favoriteLists');
-    return response.data;
-    console.table(response.data);
+    const userDetailsResponse = await axiosInstance.get(`/user/${id}/wishlist`);
+    return userDetailsResponse.data;
   } catch (error) {
     console.error(error);
     throw error;
   }
-};
+}
 //post functions
 export const createCategory = async (newCategory) => {
     try {
@@ -206,15 +195,7 @@ export const createPendingProduct = async (newPendingProduct) => {
     throw error;
   }
 }
-export const createFavoriteList = async (newFavoriteList) => {
-  try {
-    const response = await axiosInstance.post('/createFavoriteList', newFavoriteList);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
+
 
 //delete functions
 export const deleteUser = async (id) => {

@@ -12,6 +12,7 @@ use App\Models\PriceNotification;
 use App\Models\FavoriteList;
 use App\Models\Rating;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\WishList;
 
 class Product extends Model
 {
@@ -41,9 +42,9 @@ class Product extends Model
         return $this->hasMany(PriceNotification::class);
     }
 
-    public function favoriteLists() {
-        return $this->belongsToMany(FavoriteList::class, 'product_lists');
-    }
+    // public function favoriteLists() {
+    //     return $this->belongsToMany(FavoriteList::class, 'product_lists');
+    // }
 
     public function priceHistories() {
         return $this->hasMany(PriceHistory::class);
@@ -55,5 +56,10 @@ class Product extends Model
 
     public function rating(){
         return $this->hasMany(Rating::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->belongsToMany(WishList::class, 'product_wishlist', 'product_id', 'wishlist_id')->withTimestamps();
     }
 }

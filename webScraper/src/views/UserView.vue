@@ -1,6 +1,6 @@
 <template>
-  <h2 class="container my-5">Bem vindo {{ authUser.firstName }}</h2>
-  <div class="container">
+  <h2 class="container my-5">Bem vindo <b class="fw-bold text-danger">{{ authUser.firstName }}</b></h2>
+  <div class="container mb-5">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Perfil</button>
@@ -15,15 +15,15 @@
         <div v-if="!isEditing">
           <div class="mb-3">
             <label for="firstName" class="form-label">Primeiro Nome:</label>
-            <input type="text" class="form-control" id="firstName" :value="authUser.firstName" readonly>
+            <input type="text" class="form-control text-danger" id="firstName" :value="authUser.firstName" readonly>
           </div>
           <div class="mb-3">
             <label for="lastName" class="form-label">Último Nome:</label>
-            <input type="text" class="form-control" id="lastName" :value="authUser.lastName" readonly>
+            <input type="text" class="form-control text-danger" id="lastName" :value="authUser.lastName" readonly>
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
-            <input type="email" class="form-control" id="email" :value="authUser.email" readonly>
+            <input type="email" class="form-control text-danger" id="email" :value="authUser.email" readonly>
           </div>
           <button class="btn btn-danger w-100" @click="editUser">Editar</button>
         </div>
@@ -57,7 +57,30 @@
         </div>
       </div>
       <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <h3 class="mt-3">Listas de Desejos</h3>
+        <h3 class="mt-3">Lista de Favoritos</h3>
+        <div v-for="(wishList, index) in userWishLists">
+        <h4 class="fw-bold text-danger">{{ wishList.name }}</h4>
+        <ul v-if="wishList">
+          <div class="row">
+            <div class="col-3" v-for="(product,id) in wishList.products">
+              <div class="card my-3">
+                <div class="card-body p-2">
+                  <img :src="product.image[0].link" alt="Product Image" class="card-img-top" style="height: 200px;">
+                  <h5 class="card-title">{{ product.title }}</h5>
+                </div>
+                <div class="d-flex justify-content-around">
+                  <span class="card-title fw-bold text-danger">{{ product.lowestPrice }} €</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#ff0000" d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+                  </svg>
+                  <svg @click="deleteProductFromWishlist(wishList.id, product.id)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                    <path fill="#ff0000" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
       </div>
     </div>
   </div>
@@ -65,10 +88,11 @@
 
 <script setup>
 import { ref } from 'vue';
-import { getAuthenticatedUser } from '@/services/http.js';
+import { getAuthenticatedUser, getuserWishLists } from '@/services/http.js';
 import axiosInstance from '@/services/http.js';
-const authUser = ref('');
 
+const authUser = ref('');
+const userWishLists = ref([]);
 const isEditing = ref(false);
 const editedUser = ref({
   firstName: '',
@@ -77,7 +101,6 @@ const editedUser = ref({
   password: '',
   confirmPassword: ''
 });
-
 const editUser = () => {
   isEditing.value = true;
   editedUser.value = {
@@ -87,6 +110,17 @@ const editUser = () => {
     password: '',
     confirmPassword: ''
   };
+};
+
+const deleteProductFromWishlist = async (wishlistId, productId) => {
+  try {
+    await axiosInstance.delete(`/wishlist/${wishlistId}/product/${productId}`);
+
+    const updatedLists = await getuserWishLists(authUser.value.id);
+    userWishLists.value = updatedLists;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const cancelEdit = () => {
@@ -110,23 +144,58 @@ const updateUser = async () => {
       isActive: authUser.value.isActive
     });
     const updatedUserResponse = await getAuthenticatedUser();
-    authUser.value = updatedUserResponse;
     isEditing.value = false;
   } catch (error) {
     console.error(error);
   }
 };
 
-
 (async () => {
   try {
-    const response = await getAuthenticatedUser();
-    authUser.value = response;
+    const responseUser = await getAuthenticatedUser();
+    authUser.value = responseUser;
+
+    const responseLists = await getuserWishLists(authUser.value.id);
+    userWishLists.value = responseLists;
   } catch (error) {
-    console.error(error);
+    console.error('error: ' + error);
   }
 })();
+
 </script>
 
 <style scoped>
+img{
+  object-fit:contain;  
+  transition: 0.4s;
+  cursor: pointer;
+}
+.card{
+  min-width: 15dvw!important;
+  max-width: 15dvw!important;
+  max-height: 40dvh;
+}
+.card-title{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.row{
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+}
+::-webkit-scrollbar {
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: red;
+  border-radius: 4px;
+}
+svg{
+  height: 25px;
+  cursor: pointer;
+}
 </style>

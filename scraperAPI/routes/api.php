@@ -9,6 +9,13 @@ use App\Http\Controllers\Role;
 use App\Http\Controllers\Category;
 use App\Http\Controllers\Market;
 use App\Http\Controllers\FiltersController;
+use App\Http\Controllers\ScrapingController;
+use App\Http\Controllers\Image;
+use App\Http\Controllers\PendingProduct;
+use App\Http\Controllers\ProductMarketPrice;
+use App\Http\Controllers\PriceHistory;
+use App\Http\Controllers\WishLists;
+use App\Http\Controllers\Product_Wishlist;
 
 Route::post('/auth',[Auth::class,'auth']);
 Route::get('/auth/logout',[Auth::class,'logout']);
@@ -36,8 +43,11 @@ Route::get('/markets', 'MarketController@index');
 Route::get('/pendingProducts', 'PendingProductController@index');
 Route::get('/productMarketPrices', 'ProductMarketPriceController@index');
 Route::get('/priceHistoryById/{id}', 'PriceHistoryController@priceHistoryById');
-Route::get('/favoriteLists', 'FavoriteListController@index');
-Route::get('/productList', 'ProductListController@index');
+Route::get('/wishlists', 'WishListsController@index');
+Route::get('/wishlists/{id}', 'WishListsController@show');
+Route::get('/product-wishlists', 'Product_WishlistController@index');
+Route::get('/product-wishlists/{id}', 'Product_WishlistController@show');
+Route::get('/user/{userId}/wishlist', 'WishListsController@userWishList');
 
 //post routes
 Route::post('/createCategory', 'CategoryController@store');
@@ -47,8 +57,6 @@ Route::post('/createMarket', 'MarketController@store');
 Route::post('/createProduct', 'ProductController@store');
 Route::post('/productMarketPrices', 'ProductMarketPriceController@store');
 Route::post('/createPendingProduct', 'PendingProductController@store');
-Route::post('/createFavoriteList', 'FavoriteListController@store');
-Route::post('/createProductList', 'ProductListController@store');
 
 //destroy routes
 Route::delete('/destroyUser/{id}', 'UserController@destroy');
@@ -57,6 +65,8 @@ Route::delete('/destroyRole/{id}', 'RoleController@destroy');
 Route::delete('/destroyMarket/{id}', 'MarketController@destroy');
 Route::delete('/destroyProduct/{id}', 'ProductController@destroy');
 Route::delete('/destroyPendingProduct/{id}', 'PendingProductController@destroy');
+Route::delete('/wishlists/{id}', 'WishListsController@destroy');
+Route::delete('/wishlist/{wishlistId}/product/{productId}', 'Product_WishlistController@removeFromWishlist');
 
 //put routes
 Route::put('/updateUser/{id}', 'UserController@update');

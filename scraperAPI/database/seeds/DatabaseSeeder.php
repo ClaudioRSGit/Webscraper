@@ -16,7 +16,9 @@ class DatabaseSeeder extends Seeder
         $this->call([ProductMarketPriceSeeder::class]);
         $this->call([PendingProductSeeder::class]);
         $this->call([PriceHistorySeeder::class]);
-        $this->call([FavoriteListSeeder::class]);
-        $this->call([ProductListSeeder::class]);
+        // $this->call([FavoriteListSeeder::class]);
+        // $this->call([ProductListSeeder::class]);
+        $this->call([WishlistsSeeder::class]);
+        $this->call([ProductWishlistSeeder::class]);
     }
 }
