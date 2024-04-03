@@ -14,6 +14,21 @@ class WishListsController extends Controller
         return response()->json($wishlists);
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'user_id' => 'required',
+        ]);
+
+        $wishlist = new WishList();
+        $wishlist->name = $request->input('name');
+        $wishlist->user_id = $request->input('user_id');
+        $wishlist->save();
+
+        return response()->json($wishlist, 200);
+    }
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -23,7 +38,7 @@ class WishListsController extends Controller
         $wishlist = WishList::findOrFail($id);
         $wishlist->name = $request->input('name');
         $wishlist->save();
-        
+
         return response()->json($wishlist, 200);
     }
 

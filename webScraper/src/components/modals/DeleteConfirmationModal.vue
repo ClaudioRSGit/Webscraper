@@ -23,7 +23,6 @@
     name: 'DeleteConfirmationModal',
     methods: {
       confirmDelete() {
-        // Emitir um evento ou chamar um método para confirmar a exclusão
         this.$emit('confirm');
       }
     }
@@ -31,6 +30,5 @@
   </script>
   
   <style scoped>
-  /* Estilos personalizados para o modal de confirmação */
   </style>
   

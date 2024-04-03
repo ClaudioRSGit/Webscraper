@@ -57,6 +57,8 @@ Route::post('/createMarket', 'MarketController@store');
 Route::post('/createProduct', 'ProductController@store');
 Route::post('/productMarketPrices', 'ProductMarketPriceController@store');
 Route::post('/createPendingProduct', 'PendingProductController@store');
+Route::post('/createWishList', 'WishListsController@store');
+Route::post('/createProductList', 'Product_WishlistController@store');
 
 //destroy routes
 Route::delete('/destroyUser/{id}', 'UserController@destroy');

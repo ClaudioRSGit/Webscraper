@@ -3,7 +3,6 @@
         <div class="container">
           <div class="row mb-5">
             <div class="col-lg-6">
-              <!-- PRODUCT SLIDER-->
               <div class="row m-sm-0">
                 <div class="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
                   <div class="swiper product-slider-thumbs">
@@ -19,12 +18,11 @@
                 </div>
               </div>
             </div>
-            <!-- PRODUCT DETAILS-->
             <div class="col-lg-6">
                 <h1 v-if="product && product.title">{{ product.title }}</h1>
                 <span class="py-2 mb-1 text-muted">
                     <strong class="text-dark">Category:</strong>
-                    <a class="reset-anchor ms-2" href="#!">Demo Products</a>
+                    <a class="reset-anchor ms-2">Demo Products</a>
                 </span>
                 <span class="px-3 py-2 mb-3 mb-1 text-muted ">
                     <strong class="text-dark ">Tags:</strong>
@@ -39,10 +37,9 @@
                 <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
               </ul>
               <p class="text-sm mb-4" v-if="product && product.description">{{ product.description }}</p>
-              <a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
+              <a class="text-dark p-0 mb-4 d-inline-block"><i class="far fa-heart me-2" @click="openModal"></i>Add to wish list</a><br>
             </div>
           </div>
-          <!-- DETAILS TABS-->
           <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
             <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Descrição</a></li>
             <li class="nav-item"><a class="nav-link text-uppercase" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a></li>
@@ -94,7 +91,6 @@
             </div>
           </div>
     
-        <!-- product market prices-->
         <div class="container">
           <div v-if="product && product.product_market_prices">
             <div class="my-4 py-4">
@@ -107,82 +103,20 @@
               </div>
               </div>
             </div>
-          <!--Price histories-->
           <h2>Historico de Preços</h2>
-          <!--Price histories-->
           <div>
             <canvas id="myChart" width="400" height="150"></canvas>
           </div>
         </div>
-        <!-- product market prices-->
 
-          <!-- RELATED PRODUCTS-->
           <div class="row container">
             <h2 class="mb-4">Produtos Relacionados</h2>
             <ProductGrid />
-            <!-- PRODUCT-->
-            <!-- <div class="col-lg-3 col-sm-6">
-              <div class="product text-center skel-loader">
-                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></a>
-                  <div class="product-overlay">
-                    <ul class="mb-0 list-inline d-flex gap-2">
-                      <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                      <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
-                <p class="small text-muted">$351</p>
-              </div>
-            </div> -->
-            <!-- PRODUCT-->
-            <!-- <div class="col-lg-3 col-sm-6">
-              <div class="product text-center skel-loader">
-                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></a>
-                  <div class="product-overlay">
-                    <ul class="mb-0 list-inline d-flex gap-2">
-                      <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                      <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
-                <p class="small text-muted">$351</p>
-              </div>
-            </div> -->
-            <!-- PRODUCT-->
-            <!-- <div class="col-lg-3 col-sm-6">
-              <div class="product text-center skel-loader">
-                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></a>
-                  <div class="product-overlay">
-                    <ul class="mb-0 list-inline d-flex gap-2">
-                      <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                      <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
-                <p class="small text-muted">$351</p>
-              </div>
-            </div> -->
-            <!-- PRODUCT-->
-            <!-- <div class="col-lg-3 col-sm-6">
-              <div class="product text-center skel-loader">
-                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="https://www.auchan.pt/dw/image/v2/BFRC_PRD/on/demandware.static/-/Sites-auchan-pt-master-catalog/default/dw92cd1ceb/images/hi-res/003263929.jpg?sw=250&sh=250&sm=fit&bgcolor=FFFFFF" alt="..."></a>
-                  <div class="product-overlay">
-                    <ul class="mb-0 list-inline d-flex gap-2">
-                      <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                      <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <h6> <a class="reset-anchor" href="detail.html">Timex Unisex Originals</a></h6>
-                <p class="small text-muted">$351</p>
-              </div>
-            </div> -->
+            
           </div>
         </div>
       </section>
+      <AddProductToWishListModal />
 </template>
 
 <script setup>
@@ -191,6 +125,7 @@ import { useRoute } from 'vue-router';
 import { getProductsById, getPriceHistoryById  } from '../services/http';
 import ProductGrid from '@/components/ProductGrid.vue';
 import Chart from 'chart.js/auto';
+import AddProductToWishListModal from '@/components/modals/AddProductToWishListModal.vue';
 
 const product = ref(null);
 const priceHistory = ref([]);
@@ -201,6 +136,10 @@ onMounted(async () => {
   renderChart();
 });
 
+
+const openModal = () => {
+  $('#chooseWishlistModal').modal('show');
+};
 const fetchProductAndPriceHistory = async () => {
   try {
     const productId = route.params.id;

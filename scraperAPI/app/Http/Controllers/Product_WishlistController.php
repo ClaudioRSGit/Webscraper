@@ -14,6 +14,21 @@ class Product_WishlistController extends Controller
         return response()->json($productWishlist);
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'wishlist_id' => 'required',
+            'product_id' => 'required',
+        ]);
+
+        $productWishlist = new Product_Wishlist();
+        $productWishlist->wishlist_id = $request->input('wishlist_id');
+        $productWishlist->product_id = $request->input('product_id');
+        $productWishlist->save();
+
+        return response()->json($productWishlist, 200);
+    }
+
     public function removeFromWishlist($wishlistId, $productId)
     {
         $productWishlist = Product_WishList::where('wishlist_id', $wishlistId)

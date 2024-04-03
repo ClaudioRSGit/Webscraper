@@ -94,8 +94,8 @@
             </li>
             <li class="nav-item" v-if="auth.isAuth">
               <!-- <router-link class="nav-link text-red" :to="{ name: 'userpanel' }"><i class="far fa-heart me-3"></i></router-link> -->
-              <a href="/userpanel"><i class="far fa-heart me-3"></i></a>
-              <a href="/userpanel"><i class="fas fa-user me-3 text-red text-gray fw-normal"></i></a>
+              <a href="/userpanel"><i class="fas fa-user me-3 text-gray fw-normal"></i></a>
+              <a href="/userpanel"><i class="far fa-heart me-3 text-red"></i></a>
               <button class="btn btn-outline-danger" @click="logout">Sair</button>
             </li>
             <li v-else>
