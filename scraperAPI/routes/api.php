@@ -65,7 +65,7 @@ Route::delete('/destroyRole/{id}', 'RoleController@destroy');
 Route::delete('/destroyMarket/{id}', 'MarketController@destroy');
 Route::delete('/destroyProduct/{id}', 'ProductController@destroy');
 Route::delete('/destroyPendingProduct/{id}', 'PendingProductController@destroy');
-Route::delete('/wishlists/{id}', 'WishListsController@destroy');
+Route::delete('/destroyWishlist/{id}', 'WishListsController@destroy');
 Route::delete('/wishlist/{wishlistId}/product/{productId}', 'Product_WishlistController@removeFromWishlist');
 
 //put routes
@@ -74,6 +74,7 @@ Route::put('/updateProduct/{id}', 'ProductController@update');
 Route::put('/updateRole/{id}', 'RoleController@update');
 Route::put('/updateMarket/{id}', 'MarketController@update');
 Route::put('/updateCategory/{id}', 'CategoryController@update');
+Route::put('/updateWishList/{id}', 'WishListsController@update');
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

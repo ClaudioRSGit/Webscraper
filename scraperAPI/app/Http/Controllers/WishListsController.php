@@ -14,6 +14,19 @@ class WishListsController extends Controller
         return response()->json($wishlists);
     }
 
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required',
+        ]);
+
+        $wishlist = WishList::findOrFail($id);
+        $wishlist->name = $request->input('name');
+        $wishlist->save();
+        
+        return response()->json($wishlist, 200);
+    }
+
     public function destroy($id)
     {
         $wishlist = WishList::findOrFail($id);
