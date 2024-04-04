@@ -9,7 +9,7 @@
             </a>
             <div class="product-overlay">
               <ul class="mb-0 list-inline d-flex gap-2">
-                <li class="list-inline-item m-0 p-0"><i class="far fa-heart"></i></li>
+                <li class="list-inline-item m-0 p-0"><i class="far fa-heart" @click="openModal"></i></li>
               </ul>
             </div>
       </div>
@@ -17,6 +17,7 @@
       <!-- <p class="small text-danger fw-bold">{{ product.product_market_prices[0].price }} {{ product.product_market_prices[0].currency }}</p> -->
       <p class="small text-danger fw-bold">{{ product.lowestPrice }} {{ product.product_market_prices[0].currency }}</p>
     </div>
+
 </template>
 
 <script setup>
@@ -27,7 +28,6 @@ const router = useRouter();
 const props = defineProps({
   product: Object,
 });
-
 
 </script>
 

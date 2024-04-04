@@ -42,67 +42,77 @@ import { ref, onMounted } from 'vue';
 import { getuserWishLists, getAuthenticatedUser } from '@/services/http.js';
 import axiosInstance from '@/services/http.js';
 
-const authUser = ref('');
-const wishlistName = ref('');
-const successMessage = ref('');
-
 export default {
   name: 'AddProductToWishListModal',
-  data() {
-    return {
-      selectedWishlist: null,
-      userWishLists: [],
-      authUser,
-      wishlistName,
-      successMessage
-    };
+  props: {
+    prodID: String,
   },
-  methods: {
-    openModal() {
+  setup(props) {
+    const selectedWishlist = ref(null);
+    const userWishLists = ref([]);
+    const authUser = ref('');
+    const wishlistName = ref('');
+    const successMessage = ref('');
+
+    const openModal = () => {
       $('#chooseWishlistModal').modal('show');
-    },
-    async submitForm() {
+    };
+
+    const submitForm = async () => {
       try {
-        if (this.selectedWishlist === 'nova_lista') {
+        if (selectedWishlist.value === 'nova_lista') {
           return;
         }
-
+        console.log('selectedWishlist', selectedWishlist.value, 'prodID', props.prodID);
         await axiosInstance.post('/createProductList', {
-          wishlist_id: this.selectedWishlist,
-          product_id: this.$route.params.id
+          wishlist_id: selectedWishlist.value,
+          product_id: props.prodID
         });
 
         $('#chooseWishlistModal').modal('hide');
       } catch (error) {
         console.error(error);
       }
-    },
-    async createWishlist() {
+    };
+
+    const createWishlist = async () => {
       await axiosInstance.post('/createWishList', { 
-        name: this.wishlistName,
-        user_id: this.authUser.id
+        name: wishlistName.value,
+        user_id: authUser.value.id
       });
       wishlistName.value = '';
 
-      this.selectedWishlist = null;
+      selectedWishlist.value = null;
 
-      this.successMessage = 'Lista criada com sucesso!';
+      successMessage.value = 'Lista criada com sucesso!';
       setTimeout(() => {
-      this.successMessage = '';
-    }, 1000);
+        successMessage.value = '';
+      }, 1000);
 
-      this.userWishLists = await getuserWishLists(this.authUser.id);
-    },
-  },
-  async mounted() {
-    try {
-      const responseUser = await getAuthenticatedUser();
-      this.authUser = responseUser;
+      userWishLists.value = await getuserWishLists(authUser.value.id);
+    };
 
-      this.userWishLists = await getuserWishLists(this.authUser.id);
-    } catch (error) {
-      console.error('Erro ao carregar as listas de desejos do usuário:', error);
-    }
+    onMounted(async () => {
+      try {
+        const responseUser = await getAuthenticatedUser();
+        authUser.value = responseUser;
+
+        userWishLists.value = await getuserWishLists(authUser.value.id);
+      } catch (error) {
+        console.error('Erro ao carregar as listas de desejos do usuário:', error);
+      }
+    });
+
+    return {
+      selectedWishlist,
+      userWishLists,
+      authUser,
+      wishlistName,
+      successMessage,
+      openModal,
+      submitForm,
+      createWishlist
+    };
   },
 };
 </script>

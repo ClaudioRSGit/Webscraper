@@ -116,7 +116,7 @@
           </div>
         </div>
       </section>
-      <AddProductToWishListModal />
+      <AddProductToWishListModal :prodID="route.params.id"/>
 </template>
 
 <script setup>
