@@ -4,82 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\PriceNotification;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class PriceNotificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $priceNotifications = PriceNotification::all();
+
+        return response()->json($priceNotifications);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $priceNotification = new PriceNotification();
+        $priceNotification->user_id = $request->user_id;
+        $priceNotification->product_id = $request->product_id;
+        $priceNotification->wanted_price = $request->wanted_price;
+        $priceNotification->save();
+
+        return response()->json($priceNotification);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\PriceNotification  $priceNotification
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PriceNotification $priceNotification)
+    public function show()
     {
-        //
-    }
+        $notifications = [];
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\PriceNotification  $priceNotification
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PriceNotification $priceNotification)
-    {
-        //
-    }
+        $priceNotifications = PriceNotification::all();
+        
+        foreach ($priceNotifications as $notification) {
+            $product = Product::find($notification->product_id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\PriceNotification  $priceNotification
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PriceNotification $priceNotification)
-    {
-        //
-    }
+            if ($product && $product->lowestPrice > $notification->wanted_price) {
+                $message = "Wanted price: {$notification->wanted_price}, Lowest price: {$product->lowestPrice}, Product: {$product->title}";
+                $notifications[] = $message;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\PriceNotification  $priceNotification
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PriceNotification $priceNotification)
-    {
-        //
+                $product->lowestPrice = $notification->wanted_price;
+                $product->save();
+            }
+        }
+        
+        return response()->json($notifications);
     }
 }

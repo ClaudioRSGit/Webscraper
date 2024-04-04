@@ -195,6 +195,15 @@ export const createPendingProduct = async (newPendingProduct) => {
     throw error;
   }
 }
+export const createPriceNotification = async (priceNotification) => {
+  try {
+    const response = await axiosInstance.post('/createPriceNotification', priceNotification);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 
 //delete functions

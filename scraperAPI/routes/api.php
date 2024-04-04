@@ -43,11 +43,14 @@ Route::get('/markets', 'MarketController@index');
 Route::get('/pendingProducts', 'PendingProductController@index');
 Route::get('/productMarketPrices', 'ProductMarketPriceController@index');
 Route::get('/priceHistoryById/{id}', 'PriceHistoryController@priceHistoryById');
+Route::get('/priceHistories', 'PriceHistoryController@index');
 Route::get('/wishlists', 'WishListsController@index');
 Route::get('/wishlists/{id}', 'WishListsController@show');
 Route::get('/product-wishlists', 'Product_WishlistController@index');
 Route::get('/product-wishlists/{id}', 'Product_WishlistController@show');
 Route::get('/user/{userId}/wishlist', 'WishListsController@userWishList');
+Route::get('/allPriceNotifications', 'PriceNotificationController@index');
+Route::get('/priceAlerts', 'PriceNotificationController@show');
 
 //post routes
 Route::post('/createCategory', 'CategoryController@store');
@@ -59,6 +62,7 @@ Route::post('/productMarketPrices', 'ProductMarketPriceController@store');
 Route::post('/createPendingProduct', 'PendingProductController@store');
 Route::post('/createWishList', 'WishListsController@store');
 Route::post('/createProductList', 'Product_WishlistController@store');
+Route::post('/createPriceNotification', 'PriceNotificationController@store');
 
 //destroy routes
 Route::delete('/destroyUser/{id}', 'UserController@destroy');

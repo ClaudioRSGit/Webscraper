@@ -28,7 +28,7 @@ class ProductMarketPriceSeeder extends Seeder
             'price' => 720,
             'link' => 'https://mediamarkt.pt/products/smart-tv-lg-43ur73006la-led-43-ultra-hd-4k',
             'currency' => 'EUR',
-            'tag' => '.price'
+            'tag' => '.bigprices'
         ]);
         DB::table('product_market_prices')->insert([
             'market_id' => 1,
@@ -36,23 +36,23 @@ class ProductMarketPriceSeeder extends Seeder
             'price' => 220,
             'link' => 'https://mediamarkt.pt/products/smart-tv-lg-43ur73006la-led-43-ultra-hd-4k',
             'currency' => 'EUR',
-            'tag' => '.value'
+            'tag' => '.bigprices'
         ]);
         DB::table('product_market_prices')->insert([
             'market_id' => 1,
             'product_id' => 5,
             'price' => 220,
             'link' => 'https://mediamarkt.pt/products/smart-tv-lg-43ur73006la-led-43-ultra-hd-4k',
-            'currency' => 'USD',
-            'tag' => '.value'
+            'currency' => 'EUR',
+            'tag' => '.bigprices'
         ]);
         DB::table('product_market_prices')->insert([
             'market_id' => 1,
             'product_id' => 6,
             'price' => 220,
             'link' => 'https://mediamarkt.pt/products/smart-tv-lg-43ur73006la-led-43-ultra-hd-4k',
-            'currency' => 'USD',
-            'tag' => '.value'
+            'currency' => 'EUR',
+            'tag' => '.bigprices'
         ]);
         DB::table('product_market_prices')->insert([
             'market_id' => 1,
@@ -60,15 +60,15 @@ class ProductMarketPriceSeeder extends Seeder
             'price' => 220,
             'link' => 'https://mediamarkt.pt/products/smart-tv-lg-43ur73006la-led-43-ultra-hd-4k',
             'currency' => 'EUR',
-            'tag' => '.value'
+            'tag' => '.bigprices'
         ]);
         DB::table('product_market_prices')->insert([
             'market_id' => 1,
             'product_id' => 8,
             'price' => 220,
             'link' => 'https://mediamarkt.pt/products/smart-tv-lg-43ur73006la-led-43-ultra-hd-4k',
-            'currency' => 'USD',
-            'tag' => '.value'
+            'currency' => 'EUR',
+            'tag' => '.bigprices'
         ]);
     }
 }

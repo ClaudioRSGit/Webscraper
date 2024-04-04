@@ -279,7 +279,7 @@
                 brand: brand.value,
                 avg_rating: rating.value,
                 category_id: selectedCategory.value,
-                isActive: isActive.value
+                isActive: 1
               });
        
               for (const row of rowData.value) {

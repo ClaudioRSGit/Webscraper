@@ -20,6 +20,7 @@
             </div>
             <div class="col-lg-6">
                 <h1 v-if="product && product.title">{{ product.title }}</h1>
+                <h2 v-if="product && product.title" class="fw-bold text-danger">{{product.lowestPrice }} €</h2>
                 <span class="py-2 mb-1 text-muted">
                     <strong class="text-dark">Category:</strong>
                     <a class="reset-anchor ms-2">Demo Products</a>
@@ -37,7 +38,8 @@
                 <li class="list-inline-item m-0 4"><i class="fas fa-star small text-warning"></i></li>
               </ul>
               <p class="text-sm mb-4" v-if="product && product.description">{{ product.description }}</p>
-              <a class="text-dark p-0 mb-4 d-inline-block"><i class="far fa-heart me-2" @click="openModal"></i>Add to wish list</a><br>
+              <span class="text-danger" style="cursor: pointer;"><i class="far fa-heart me-2" @click="openModal"></i>Adicionar à lista de desejos</span><br><br>
+              <i class="far fa-bell me-2" style="cursor: pointer;"@click="openPriceModal"></i>Alerta de preço<br>
             </div>
           </div>
           <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
@@ -56,7 +58,8 @@
                 <div class="row">
                   <div class="col-lg-8">
                     <div class="d-flex mb-3">
-                      <div class="flex-shrink-0"><img class="rounded-circle" src="https://img.freepik.com/premium-vector/man-character_665280-46970.jpg" alt="" width="50"/></div>
+                      <div class="flex-shrink-0">
+                        <img class="rounded-circle" src="https://img.freepik.com/premium-vector/man-character_665280-46970.jpg" alt="" width="50"/></div>
                       <div class="ms-3 flex-shrink-1">
                         <h6 class="mb-0 text-uppercase">Jason Doe</h6>
                         <p class="small text-muted mb-0 text-uppercase">20 May 2020</p>
@@ -117,15 +120,17 @@
         </div>
       </section>
       <AddProductToWishListModal :prodID="route.params.id"/>
+      <price-alert-modal @confirm="sendPriceAlert"></price-alert-modal>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { getProductsById, getPriceHistoryById  } from '../services/http';
+import { getProductsById, getPriceHistoryById, createPriceNotification  } from '../services/http';
 import ProductGrid from '@/components/ProductGrid.vue';
 import Chart from 'chart.js/auto';
 import AddProductToWishListModal from '@/components/modals/AddProductToWishListModal.vue';
+import priceAlertModal from '@/components/modals/priceAlertModal.vue';
 
 const product = ref(null);
 const priceHistory = ref([]);
@@ -139,6 +144,9 @@ onMounted(async () => {
 
 const openModal = () => {
   $('#chooseWishlistModal').modal('show');
+};
+const openPriceModal = () => {
+  $('#priceAlertModal').modal('show');
 };
 const fetchProductAndPriceHistory = async () => {
   try {
