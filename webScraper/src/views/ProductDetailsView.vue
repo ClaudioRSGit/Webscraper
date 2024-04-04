@@ -42,6 +42,7 @@
               <i class="far fa-bell me-2" style="cursor: pointer;"@click="openPriceModal"></i>Alerta de preço<br>
             </div>
           </div>
+          <!-- sd -->
           <ul class="nav nav-tabs border-0" id="myTab" role="tablist">
             <li class="nav-item"><a class="nav-link text-uppercase active" id="description-tab" data-bs-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="true">Descrição</a></li>
             <li class="nav-item"><a class="nav-link text-uppercase" id="reviews-tab" data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews</a></li>

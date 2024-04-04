@@ -21,7 +21,7 @@ class UpdatePriceHistory implements ShouldQueue
     public function handle()
     {
         $productMarketPrices = ProductMarketPrice::all();
-
+        //.
         foreach ($productMarketPrices as $productMarketPrice) {
             $currentPrice = $this->scrapePrice($this->createClient(), $productMarketPrice->link, $productMarketPrice->tag);
 

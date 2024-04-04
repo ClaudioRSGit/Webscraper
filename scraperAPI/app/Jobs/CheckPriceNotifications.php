@@ -20,7 +20,7 @@ class CheckPriceNotifications implements ShouldQueue
     public function handle()
     {
         $priceNotifications = PriceNotification::all();
-
+        //.
         foreach ($priceNotifications as $notification) {
             $product = Product::find($notification->product_id);
 

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class PriceNotification extends Model
 {
     use SoftDeletes;
-
+    
     protected $fillable = [
         'user_id',
         'product_id',

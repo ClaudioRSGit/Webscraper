@@ -31,7 +31,7 @@ class PriceNotificationController extends Controller
         $notifications = [];
 
         $priceNotifications = PriceNotification::all();
-        
+        //.
         foreach ($priceNotifications as $notification) {
             $product = Product::find($notification->product_id);
 
