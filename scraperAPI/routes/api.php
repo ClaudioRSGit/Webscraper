@@ -52,7 +52,7 @@ Route::get('/user/{userId}/wishlist', 'WishListsController@userWishList');
 Route::get('/allPriceNotifications', 'PriceNotificationController@index');
 Route::get('/priceAlerts', 'PriceNotificationController@show');
 
-//post routes
+//post routes.
 Route::post('/createCategory', 'CategoryController@store');
 Route::post('/createUser', 'UserController@store');
 Route::post('/createRole', 'RoleController@store');
