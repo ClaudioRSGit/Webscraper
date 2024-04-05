@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'lastName' => 'admin',
             'email' => 'admin@admin.com',
             'password' => Hash::make('Claranet123!'),
-            'isActive' => true,
+            'isActive' => false,
             'role_id' => 1
         ]);
     }

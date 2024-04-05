@@ -227,17 +227,6 @@ const deleteProductFromWishlist = async (wishlistId, productId) => {
   }
 };
 
-// const deleteWishlists = async (wishlistId) => {
-//   try {
-//     await axiosInstance.delete(`/destroyWishlist/${wishlistId}`);
-
-//     const updatedLists = await getuserWishLists(authUser.value.id);
-//     userWishLists.value = updatedLists;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
 const cancelEdit = () => {
   isEditing.value = false;
   editedUser.value = {

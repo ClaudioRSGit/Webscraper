@@ -14,7 +14,9 @@ class CreateUsersTable extends Migration
             $table->string('lastName');
             $table->string('email');
             $table->string('password');
-            $table->boolean('isActive')->default(true);
+            $table->boolean('firstLogin')->default(true);
+            $table->double('registerCode')->nullable();
+            $table->boolean('isActive')->default(false);
             $table->foreignId('role_id')->constrained();
             $table->timestamps();
             $table->softDeletes();

@@ -9,36 +9,7 @@ class SubscribeCodeController extends Controller
 {
     public function index()
     {
-        //
-    }
-
-    public function create()
-    {
-        //
-    }
-
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show(SubscribeCode $subscribeCode)
-    {
-        //
-    }
-
-    public function edit(SubscribeCode $subscribeCode)
-    {
-        //
-    }
-
-    public function update(Request $request, SubscribeCode $subscribeCode)
-    {
-        //
-    }
-
-    public function destroy(SubscribeCode $subscribeCode)
-    {
-        //
+        $subscribeCodes = SubscribeCode::all();
+        return response()->json($subscribeCodes);
     }
 }

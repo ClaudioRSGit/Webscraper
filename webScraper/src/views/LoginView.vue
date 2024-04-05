@@ -47,6 +47,7 @@ import {reactive} from 'vue'
 import {useAuth} from '@/stores/auth.js'
 import {useRouter} from 'vue-router'
 import {loginUser} from '@/services/http.js'
+import { getAuthenticatedUser } from '@/services/http.js';
 
 const auth = useAuth();
 const router = useRouter();
@@ -63,10 +64,17 @@ async function Login() {
     } = await loginUser(user);
     auth.setUser(userData);
     auth.setIsAuth(true);
-
-    if (userData.role_id === 1) {
+    
+    const responseUser = await getAuthenticatedUser();
+    
+    console.log(responseUser);
+    if (responseUser.firstLogin === 1 && responseUser.isActive === 0 && userData.role_id !== 1) {
+      router.push({name:'verification'});
+    }
+    else if (userData.role_id === 1) {
       router.push({name:'administration'});
-    }else{
+    }
+    else{
       router.push({name:'home'});
     }
   } catch (error) {

@@ -67,7 +67,7 @@ export default{
             password: '',
             firstName: '',
             lastName: '',
-            isActive: true,
+            isActive: 0,
             role_id: 2
         });
 

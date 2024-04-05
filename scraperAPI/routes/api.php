@@ -18,6 +18,7 @@ use App\Http\Controllers\WishLists;
 use App\Http\Controllers\Product_Wishlist;
 
 Route::post('/auth',[Auth::class,'auth']);
+Route::post('/auth/verification/{code}', [Auth::class, 'verification']);
 Route::get('/auth/logout',[Auth::class,'logout']);
 Route::get('/auth/verify',[Auth::class,'verify']);
 Route::post('/register', [Auth::class, 'register']);
@@ -51,6 +52,7 @@ Route::get('/product-wishlists/{id}', 'Product_WishlistController@show');
 Route::get('/user/{userId}/wishlist', 'WishListsController@userWishList');
 Route::get('/allPriceNotifications', 'PriceNotificationController@index');
 Route::get('/priceAlerts', 'PriceNotificationController@show');
+Route::get('/subscribeCodes', 'SubscribeCodeController@index');
 
 //post routes.
 Route::post('/createCategory', 'CategoryController@store');

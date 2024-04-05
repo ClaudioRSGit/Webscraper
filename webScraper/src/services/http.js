@@ -31,7 +31,7 @@ export const getAuthenticatedUser = async () => {
     const response = await axiosInstance.get('/auth/verify');
     const authenticatedUser = response.data.user;
 
-    const userDetailsResponse = await axiosInstance.get(`/user/${authenticatedUser.role_id}`);
+    const userDetailsResponse = await axiosInstance.get(`/user/${authenticatedUser.id}`);
 
     return userDetailsResponse.data;
   } catch (error) {
