@@ -55,33 +55,11 @@
                                 <label class="form-check-label" for="bestRated">Melhores Avaliados</label>
                             </div>
                             
-                            <!-- <div class="text-danger mt-3">
-                                <strong class="text-uppercase fw-bold">Preço</strong>
-                                <hr style="fill: red;">
-                            </div>
-
-                            <div class="d-flex gap-2">
-                                <div class="mb-3">
-                                    <input type="number" class="form-control" id="priceFrom" name="priceFrom" placeholder="De">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="number" class="form-control" id="priceTo" name="priceTo" placeholder="A">
-                                </div>
-                            </div> -->
-
                             <div class="text-danger mt-3">
                                 <strong class="text-uppercase fw-bold">Ordenar por</strong>
                                 <hr style="fill: red;">
                             </div>
-                            <!-- <div class="form-check">
-                                <input class="form-check-input" type="radio" id="priceDescending" name="priceFilter" value="priceDescending">
-                                <label class="form-check-label" for="priceDescending">Preço DEC</label>
-                            </div>
 
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" id="priceAscending" name="priceFilter" value="priceAscending">
-                                <label class="form-check-label" for="priceAscending">Preço ASC</label>
-                            </div> -->
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" id="titleAscending" name="titleFilter" value="titleAscending">
                                 <label class="form-check-label" for="titleAscending">Nome ASC</label>

@@ -16,6 +16,9 @@ use App\Http\Controllers\ProductMarketPrice;
 use App\Http\Controllers\PriceHistory;
 use App\Http\Controllers\WishLists;
 use App\Http\Controllers\Product_Wishlist;
+use App\Http\Controllers\PriceNotification;
+use App\Http\Controllers\SubscribeCode;
+use App\Http\Controllers\SearchHistory;
 
 Route::post('/auth',[Auth::class,'auth']);
 Route::post('/auth/verification/{code}', [Auth::class, 'verification']);
@@ -53,6 +56,8 @@ Route::get('/user/{userId}/wishlist', 'WishListsController@userWishList');
 Route::get('/allPriceNotifications', 'PriceNotificationController@index');
 Route::get('/priceAlerts', 'PriceNotificationController@show');
 Route::get('/subscribeCodes', 'SubscribeCodeController@index');
+Route::get('/searchHistory', 'SearchHistoryController@index');
+Route::get('/searchHistory/{id}', 'SearchHistoryController@show');
 
 //post routes.
 Route::post('/createCategory', 'CategoryController@store');
@@ -65,6 +70,7 @@ Route::post('/createPendingProduct', 'PendingProductController@store');
 Route::post('/createWishList', 'WishListsController@store');
 Route::post('/createProductList', 'Product_WishlistController@store');
 Route::post('/createPriceNotification', 'PriceNotificationController@store');
+Route::post('/createSearchHistory', 'SearchHistoryController@store');
 
 //destroy routes
 Route::delete('/destroyUser/{id}', 'UserController@destroy');
@@ -75,6 +81,7 @@ Route::delete('/destroyProduct/{id}', 'ProductController@destroy');
 Route::delete('/destroyPendingProduct/{id}', 'PendingProductController@destroy');
 Route::delete('/destroyWishlist/{id}', 'WishListsController@destroy');
 Route::delete('/wishlist/{wishlistId}/product/{productId}', 'Product_WishlistController@removeFromWishlist');
+Route::delete('/deleteAllProductMarketPrices/{id}', 'ProductMarketPriceController@deleteAllProductMarketPrices');
 
 //put routes
 Route::put('/updateUser/{id}', 'UserController@update');

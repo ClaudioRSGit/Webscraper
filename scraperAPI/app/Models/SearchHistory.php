@@ -11,7 +11,6 @@ class SearchHistory extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'user_id',
         'query'
     ];
 

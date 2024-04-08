@@ -1,4 +1,5 @@
 import { useAuth } from '@/stores/auth.js'
+import router from '.';
 
 export default async function routes(to, from, next) {
   const auth = useAuth();
@@ -7,6 +8,9 @@ export default async function routes(to, from, next) {
   
   try {
     // Check if the route requires authentication
+    if (to.name === 'administration' && auth.user.role_id !== 1) {
+      router.push({ name: 'home' });
+    }
     if (requiresAuth) {
       // Check if user is authenticated
       if (!auth.isAuth) {
@@ -28,12 +32,13 @@ export default async function routes(to, from, next) {
         }
       } else {
         // Redirect to login if user is not authenticated
-        next({ name: 'login' });
+        //next({ name: 'login' });
       }
     } else {
       // Continue to the route if authentication is not required
       next();
     }
+    
   } catch (error) {
     console.error('Error in route navigation:', error);
     next();

@@ -185,7 +185,7 @@
   <script>
   import axios from 'axios';
   import { ref, onMounted } from 'vue';
-  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct, createProductMarketPrice, getMarkets, getProductsById } from '@/services/http.js';
+  import { getProducts, deleteProduct, createProduct, getCategories, updateProduct, createProductMarketPrice, getMarkets, getProductsById, clearProductMarketPrices } from '@/services/http.js';
   import { scrapPrice } from '@/services/scraper.js';
 
   export default {
@@ -344,6 +344,8 @@
               rating.value = product.avg_rating;
               selectedCategory.value = product.category_id;
               isActive.value = product.isActive
+              
+              await clearProductMarketPrices(id);
 
               if (productDetails.product_market_prices && productDetails.product_market_prices.length > 0) {
                 rowData.value = productDetails.product_market_prices.map(price => ({
@@ -353,6 +355,8 @@
                   price: price.price
                 }));
               }
+
+
               selectedMarket.value = getMarketIdFromProductDetails(productDetails);
               $('#productModalLabel').text('Edit Product');
               $('#productModal').modal('show');

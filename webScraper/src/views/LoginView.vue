@@ -59,7 +59,7 @@ const user = reactive({
 async function Login() {
   try {
     const {
-      token, 
+      token,
       user: userData
     } = await loginUser(user);
     auth.setUser(userData);
@@ -67,7 +67,6 @@ async function Login() {
     
     const responseUser = await getAuthenticatedUser();
     
-    console.log(responseUser);
     if (responseUser.firstLogin === 1 && responseUser.isActive === 0 && userData.role_id !== 1) {
       router.push({name:'verification'});
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Image;
 
 class ProductController extends Controller
 {
@@ -43,7 +44,8 @@ class ProductController extends Controller
             'description' => 'required',
             'brand' => 'required',
             'avg_rating' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            'image_link' => 'required'
         ]);
 
         $product = new Product();
@@ -55,6 +57,11 @@ class ProductController extends Controller
         $product->isActive = $request->input('isActive');
         
         $product->save();
+
+        $image = new Image();
+        $image->link = $request->input('image_link');
+        $image->product_id = $product->id;
+        $image->save();
         
         return response()->json([
             "message" => "product created successfully!",

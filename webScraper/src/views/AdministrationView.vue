@@ -135,6 +135,7 @@ import Dashboard from '@/components/Dashboard.vue';
 import PendingProductsTable from '../components/PendingProductsTable.vue';
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/stores/auth.js';
+import { markRaw } from 'vue';
 
 const currentTableComponent = ref(null);
 const activeItem = ref('dashboard');
@@ -148,26 +149,26 @@ function logout() {
 function showTable(table) {
   switch(table) {
     case 'dashboard':
-      currentTableComponent.value = Dashboard;
+      currentTableComponent.value = markRaw(Dashboard);
       break;
     case 'usersTable':
-      currentTableComponent.value = UsersTable;
+      currentTableComponent.value = markRaw(UsersTable);
       break;
     case 'rolesTable':
-      currentTableComponent.value = RolesTable;
+      currentTableComponent.value = markRaw(RolesTable);
       break;
     case 'productsTable':
-      currentTableComponent.value = ProductsTable;
+      currentTableComponent.value = markRaw(ProductsTable);
       break;
     case 'categoriesTable':
-      currentTableComponent.value = CategoriesTable;
+      currentTableComponent.value = markRaw(CategoriesTable);
       break;
     case 'marketsTable':
-      currentTableComponent.value = MarketsTable;
+      currentTableComponent.value = markRaw(MarketsTable);
       break;
     case 'pendingProductsTable':
-    currentTableComponent.value = PendingProductsTable;
-    break;
+      currentTableComponent.value = markRaw(PendingProductsTable);
+      break;
     default:
       currentTableComponent.value = null;
   }

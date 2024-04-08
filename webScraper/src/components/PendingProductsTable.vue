@@ -77,7 +77,8 @@
           brand: product.brand,
           avg_rating: 0,
           category_id: 1,
-          isActive: 0
+          isActive: 0,
+          image_link: product.link
         };
         
         await createProduct(acceptedProduct);

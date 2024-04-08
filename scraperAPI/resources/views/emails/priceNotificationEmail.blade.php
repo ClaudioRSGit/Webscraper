@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Email de Notificação de Preço</title>
+    <title>Notificação E-Scraper</title>
 </head>
 <body>
     <h1>Email de Notificação de Preço</h1>

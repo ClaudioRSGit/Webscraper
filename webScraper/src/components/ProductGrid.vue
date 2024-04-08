@@ -18,7 +18,7 @@
                 </div>
               </div>
               <h6> <a class="reset-anchor">{{ products[0].title }}</a></h6>
-              <p class="small text-danger fw-bold">{{ products[0].product_market_prices[0].price }} {{ products[0].product_market_prices[0].currency }}</p>
+              <p class="small text-danger fw-bold">{{ products[0].lowestPrice }} {{ products[0].product_market_prices[0].currency }}</p>
             </div>
           </div>
           <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -33,7 +33,7 @@
                 </div>
               </div>
             <h6> <a class="reset-anchor">{{ products[1].title }}</a></h6>
-            <p class="small text-danger fw-bold">{{ products[1].product_market_prices[0].price }} {{ products[1].product_market_prices[0].currency }}</p>
+            <p class="small text-danger fw-bold">{{ products[1].lowestPrice }} {{ products[1].product_market_prices[0].currency }}</p>
       </div>
     </div>
     <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -51,7 +51,7 @@
                 </div>
         </div>
         <h6> <a class="reset-anchor">{{ products[2].title }}</a></h6>
-        <p class="small text-danger fw-bold">{{ products[2].product_market_prices[0].price }} {{ products[2].product_market_prices[0].currency }}</p>
+        <p class="small text-danger fw-bold">{{ products[2].lowestPrice }} {{ products[2].product_market_prices[0].currency }}</p>
       </div>
     </div>
     <div class="col-xl-3 col-lg-4 col-sm-6">
@@ -69,7 +69,7 @@
                 </div>
         </div>
         <h6> <a class="reset-anchor">{{ products[3].title }}</a></h6>
-        <p class="small text-danger fw-bold">{{ products[3].product_market_prices[0].price }} {{ products[3].product_market_prices[0].currency }}</p>
+        <p class="small text-danger fw-bold">{{ products[3].lowestPrice }} {{ products[3].product_market_prices[0].currency }}</p>
       </div>
     </div>
   </div>
@@ -92,7 +92,7 @@ export default {
     async function fetchProducts() {
       try {
         const allProducts = await getProducts();
-        const shuffledProducts = shuffle(allProducts).filter(product => product.isActive === 1);
+        const shuffledProducts = shuffle(allProducts).filter(product => product.isActive === 1).filter(product => product.lowestPrice);
         products.value = shuffledProducts.slice(0, 4);
         
       } catch (error) {

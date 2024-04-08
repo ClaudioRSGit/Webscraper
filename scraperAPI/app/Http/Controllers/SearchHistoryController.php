@@ -4,82 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\SearchHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class SearchHistoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $searchHistories = SearchHistory::all();
+        return response()->json($searchHistories);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $searchHistory = SearchHistory::find($id)->get();
+        return response()->json($searchHistory);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
-        //
-    }
+        $query = $request->input('query');
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\SearchHistory  $searchHistory
-     * @return \Illuminate\Http\Response
-     */
-    public function show(SearchHistory $searchHistory)
-    {
-        //
-    }
+        $searchHistory = new SearchHistory();
+        $searchHistory->user_id = 1;
+        $searchHistory->query = $query;
+        $searchHistory->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\SearchHistory  $searchHistory
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SearchHistory $searchHistory)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SearchHistory  $searchHistory
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SearchHistory $searchHistory)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\SearchHistory  $searchHistory
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SearchHistory $searchHistory)
-    {
-        //
+        return response()->json($searchHistory);
     }
 }

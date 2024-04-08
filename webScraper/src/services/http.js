@@ -126,6 +126,17 @@ export const getuserWishLists = async (id) => {
     throw error;
   }
 }
+export const getSearchHistoryById = async (id) => {
+  try {
+    const response = await axiosInstance.get(`/searchHistory/${id}`);
+    consokle.log('asdasd',response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 //post functions
 export const createCategory = async (newCategory) => {
     try {
@@ -205,6 +216,15 @@ export const createPriceNotification = async (priceNotification) => {
   }
 }
 
+export const createSearchHistory = async (product) => {
+  try {
+    const response = await axiosInstance.post('/createSearchHistory', product);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 //delete functions
 export const deleteUser = async (id) => {
@@ -264,6 +284,17 @@ export const deletePendingProduct = async (id) => {
     throw error;
   }
 };
+
+export const clearProductMarketPrices = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`/deleteAllProductMarketPrices/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 //put functions
 export const updateRole = async (id, updatedRoleData) => {
   try {

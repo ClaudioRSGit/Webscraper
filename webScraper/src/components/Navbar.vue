@@ -77,19 +77,29 @@
               <div class="searchHistory">
                 <h5 class="mt-2">Histórico de pesquisa</h5>
                 <br>
-                <div class="mb-1" v-if="searchHistory.length === 0">Sem histórico de pesquisa</div>
-                <div class="mb-1" v-for="query in searchHistory" :key="query">
-                  <svg xmlns="http://www.w3.org/2000/svg" style="height: 15px; margin-left: 30px;"  viewBox="0 0 512 512">
-                    <path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/>
-                  </svg>
-                  <span>{{ query.title }}</span>
-                </div>
+                <div class="mb-1" v-if="searchHistory.length === 0 && auth.isAuth === false">Sem histórico de pesquisa</div>
+                <div v-if="auth.isAuth === true">
+                  <div class="mb-1" v-for="query in userSearchHistory" :key="query">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="height: 15px; margin-left: 30px;" viewBox="0 0 512 512">
+                          <path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/>
+                      </svg>
+                      <span>{{ query.query }}</span>
+                  </div>
+              </div>
+              <div v-else>
+                  <div class="mb-1" v-for="query in searchHistory" :key="query">
+                      <svg xmlns="http://www.w3.org/2000/svg" style="height: 15px; margin-left: 30px;" viewBox="0 0 512 512">
+                          <path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/>
+                      </svg>
+                      <span>{{ query.title }}</span>
+                  </div>
+              </div>
               </div>
             </div>
           </div>
 
           <ul class="navbar-nav ms-auto">               
-            <li class="nav-item" v-if="auth.isAuth">
+            <li class="nav-item" v-if="auth.isAuth && auth.user_id === 1">
               <router-link class="nav-link text-red" :to="{ name: 'administration' }">Administração</router-link>
             </li>
             <li class="nav-item" v-if="auth.isAuth">
@@ -113,14 +123,15 @@
 import { useAuth } from '@/stores/auth.js'
 import { useRouter } from 'vue-router'
 import axiosInstance from '@/services/http';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { createSearchHistory, getSearchHistoryById, getAuthenticatedUser } from '@/services/http';
 
 export default {
   name: 'navbar',
   setup() {
     const auth = useAuth();
     const router = useRouter();
-
+    const userSearchHistory = ref([]);
     const searchQuery = ref('');
     const results = ref([]);
     const showsearchResults = ref(false);
@@ -147,14 +158,23 @@ export default {
 
     const selectItem = (id, title) => {
       addToSearchHistory({ id, title });
+      addToSearchHistoryAPI(title);
       searchQuery.value = '';
       showsearchResults.value = false;
     };
 
-    const addToSearchHistory = (product) => {
+    const addToSearchHistory = async (product) => {
       const searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
       searchHistory.push(product);
       localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    };
+
+    const addToSearchHistoryAPI = async (title) => {
+      try {
+        await createSearchHistory({ query: title });
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     const logout = () => {
@@ -183,7 +203,17 @@ export default {
         cleanQuery();
       }
     };
-    
+
+    const getHistoryById = async () => {
+      try {
+        const user = await getAuthenticatedUser();
+        const response = await axiosInstance.get(`/searchHistory/${user.id}`);
+        auth.user_id = user.id;
+        userSearchHistory.value = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    };
     const cleanQuery = () => {
       searchQuery.value = '';
       showsearchResults.value = false;
@@ -201,6 +231,8 @@ export default {
       return router.currentRoute.value.name === 'administration';
     });
 
+    onMounted(getHistoryById);
+
     return {
       auth,
       searchQuery,
@@ -213,7 +245,8 @@ export default {
       searchHistory,
       newProduct,
       submitForm,
-      openModal
+      openModal,
+      userSearchHistory
     };
 },
 };

@@ -38,4 +38,13 @@ class ProductMarketPriceController extends Controller
 
         return response()->json($productMarketPrice, 200);
     }
+
+    public function deleteAllProductMarketPrices($id)
+    {
+        $productMarketPrices = ProductMarketPrice::where('product_id', $id)->get();
+        foreach ($productMarketPrices as $productMarketPrice) {
+            $productMarketPrice->delete();
+        }
+        return response()->json(['message' => 'Product Market Prices deleted successfully'], 200);
+    }
 }
