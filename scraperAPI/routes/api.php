@@ -58,6 +58,7 @@ Route::get('/priceAlerts', 'PriceNotificationController@show');
 Route::get('/subscribeCodes', 'SubscribeCodeController@index');
 Route::get('/searchHistory', 'SearchHistoryController@index');
 Route::get('/searchHistory/{id}', 'SearchHistoryController@show');
+Route::get('/dashboard', 'DashboardController@index');
 
 //post routes.
 Route::post('/createCategory', 'CategoryController@store');

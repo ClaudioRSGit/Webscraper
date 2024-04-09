@@ -4,7 +4,9 @@
             <li class="navbar-brand"><router-link class="fw-bold text-uppercase text-dark" :to="{ name: 'home' }">E Scraper</router-link></li>         
             <li class="nav-item"><router-link class="nav-link" :to="{ name: 'products' }">Products</router-link></li>
             <li class="nav-item">
+            <a href="/userpanel">
               <i class="fas fa-user me-3 text-gray fw-normal"></i>
+            </a>
               <a class=" -outline-secondary" @click="logout">Sair</a>
             </li>
           </ul>

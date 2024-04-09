@@ -136,7 +136,15 @@ export const getSearchHistoryById = async (id) => {
     throw error;
   }
 }
-
+export const getDashboardData = async () => {
+  try {
+    const response = await axiosInstance.get('/dashboard');
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 //post functions
 export const createCategory = async (newCategory) => {
     try {
